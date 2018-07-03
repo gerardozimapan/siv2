@@ -1,0 +1,210 @@
+<?php
+$this->headScript()->appendFile('/js/contacts.js', 'text/javascript');
+$this->headTitle('Actualizar Cliente');
+
+$this->mainMenu()->setActiveItemId('clients');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Clientes' => $this->url('clients'),
+    'Actualizar' => $this->url('clients', ['action' => 'edit'])
+]);
+
+$form->get('name')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Empresa S.A.'
+]);
+
+$form->get('taxAddress')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Calle No. 0'
+]);
+
+$form->get('rfc')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'XXX000000-0A0'
+]);
+
+$form->get('paymentTerms')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '90 días'
+]);
+
+$value = $form->get('creditLimit')->getValue();
+$value = $this->currencyFormat($value, 'MXN', true, 'es_MX');
+$form->get('creditLimit')->setValue($value);
+$form->get('creditLimit')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '1,000,000.00'
+]);
+
+$value = $form->get('discount')->getValue();
+$value = $this->numberFormat(
+    $value,
+    NumberFormatter::PERCENT,
+    NumberFormatter::TYPE_DEFAULT,
+    'es_MX'
+);
+$form->get('discount')->setValue($value);
+$form->get('discount')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '10%'
+]);
+
+$form->get('comments')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Observaciones'
+]);
+
+$form->get('contacts')->setAttributes([
+    'id' => 'contactsInput',
+]);
+
+$form->get('submit')->setAttributes([
+    'value' => 'Actualizar',
+    'class' => 'btn btn-primary'
+]);
+
+$form->prepare();
+
+$formContact->get('name')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Nombre',
+    'id' => 'name'
+]);
+
+$formContact->get('phoneNumber')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '4421234567',
+    'id' => 'phoneNumber'
+]);
+
+$formContact->get('email')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'contacto@dominio.ext',
+    'id' => 'email'
+]);
+
+$formContact->get('job')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Ventas',
+    'id' => 'job'
+]);
+
+// prepare contact form
+$formContact->prepare();
+
+?>
+
+<h2>Actualizar <i><?= $this->escapeHtml($client->getName()); ?></i></h2>
+
+<div class="row">
+    <?= $this->form()->openTag($form); ?>
+    
+    <div class="col-md-6">
+        
+        
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')); ?>
+            <?= $this->formElement($form->get('name')); ?>
+            <?= $this->formElementErrors($form->get('name')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('taxAddress')); ?>
+            <?= $this->formElement($form->get('taxAddress')); ?>
+            <?= $this->formElementErrors($form->get('taxAddress')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('rfc')); ?>
+            <?= $this->formElement($form->get('rfc')); ?>
+            <?= $this->formElementErrors($form->get('rfc')); ?>                 
+        </div>
+
+        <div class="form-group">
+            <label>Contactos</label>&nbsp;<a href="#" data-toggle="modal" data-target="#contactModal">Agregar</a>
+            <div id="contacts">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('paymentTerms')); ?>
+            <?= $this->formElement($form->get('paymentTerms')); ?>
+            <?= $this->formElementErrors($form->get('paymentTerms')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('creditLimit')); ?>
+            <?= $this->formElement($form->get('creditLimit')); ?>
+            <?= $this->formElementErrors($form->get('creditLimit')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('discount')); ?>
+            <?= $this->formElement($form->get('discount')); ?>
+            <?= $this->formElementErrors($form->get('discount')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('comments')); ?>
+            <?= $this->formElement($form->get('comments')); ?>
+            <?= $this->formElementErrors($form->get('comments')); ?>                  
+        </div>
+        
+
+        <?= $this->formElement($form->get('submit')); ?>
+        <?= $this->formHidden($form->get('contacts')); ?>
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>
+
+<!-- Modal for contacts -->
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" 
+    aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+            <div class="col-md-10">
+                <h4 class="modal-title" id="contactModalLabel">Agregar Contacto</h4>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form id="contactForm">
+        <div class="form-group">
+            <?= $this->formLabel($formContact->get('name')); ?>
+            <?= $this->formElement($formContact->get('name')); ?>
+            <?= $this->formElementErrors($formContact->get('name')); ?>                  
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($formContact->get('phoneNumber')); ?>
+            <?= $this->formElement($formContact->get('phoneNumber')); ?>
+            <?= $this->formElementErrors($formContact->get('phoneNumber')); ?>                  
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($formContact->get('email')); ?>
+            <?= $this->formElement($formContact->get('email')); ?>
+            <?= $this->formElementErrors($formContact->get('email')); ?>                  
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($formContact->get('job')); ?><br>
+            <?= $this->formElement($formContact->get('job')); ?>
+            <?= $this->formElementErrors($formContact->get('job')); ?>                  
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="addContact">Agregar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

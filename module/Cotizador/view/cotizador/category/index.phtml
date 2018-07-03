@@ -1,0 +1,46 @@
+<?php
+$this->headTitle('Categoría');
+
+$this->mainMenu()->setActiveItemId('categories');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Categorias' => $this->url('categories'),
+]);
+?>
+
+<h2>Categoría</h2>
+<p>
+    <a class="btn btn-default" href="
+        <?= $this->url('categories', ['action' => 'add']); ?>">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+    </a>
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>&nbsp;</th>
+    </tr>
+
+    <?php foreach ($categories as $category) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($category->getId()); ?></td>
+        <td><a href="<?= $this->url('categories', ['action' => 'view', 'id' => $category->getId()]); ?>"><?= $this->escapeHtml($category->getName()); ?></a></td>
+        <td><?= $this->escapeHtml($category->getDescription()); ?></td>
+        <td>
+            <a class="btn btn-warning" 
+                href="<?=
+                    $this->url(
+                        'categories',
+                        ['action' => 'edit', 'id' => $category->getId()]
+                    );
+                ?>">
+                <span class="glyphicon glyphicon-pencil" ></span> Actualizar
+            </a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

@@ -1,0 +1,53 @@
+<?php
+$this->headTitle('Actualizar Categoría');
+
+$this->mainMenu()->setACtiveItemId('categories');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Categorias' => $this->url('categories'),
+    'Actualizar' => $this->url('categories', ['action' => 'edit'])
+]);
+
+$form->get('name')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Tornillos'
+]);
+
+$form->get('description')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Descripción de la categoría.'
+]);
+
+$form->get('submit')->setAttributes([
+    'value' => 'Actualizar',
+    'class' => 'btn btn-primary'
+]);
+
+$form->prepare();
+
+?>
+
+<h2>Actualizar <i><?= $this->escapeHtml($category->getName()); ?></i></h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+        
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')); ?>
+            <?= $this->formElement($form->get('name')); ?>
+            <?= $this->formElementErrors($form->get('name')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('description')); ?>
+            <?= $this->formElement($form->get('description')); ?>
+            <?= $this->formElementErrors($form->get('description')); ?>                  
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+        
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>

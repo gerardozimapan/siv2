@@ -1,0 +1,28 @@
+<?php
+$this->headTitle('Eliminar Categoría');
+
+$this->mainMenu()->setACtiveItemId('categories');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Categorias' => $this->url('categories'),
+    'Eliminar' => $this->url('categories', ['action' => 'delete'])
+]);
+
+$url = $this->url('categories', ['action' => 'delete', 'id' => $category->getId()]);
+?>
+
+<h2>Eliminar Categoría</h2>
+
+<p>
+    ¿Estás seguro que deseas eliminar: 
+    "<?= $this->escapeHtml($category->getName()) ?>"?
+</p>
+
+<form action="<?= $url ?>" method="post">
+<div class="form-group">
+    <input type="hidden" name="id" value="<?= (int) $category->getId(); ?>" />
+    <input type="submit" class="btn btn-danger" name="del" value="Si" />
+    <input type="submit" class="btn btn-success" name="del" value="No" />
+</div>
+</form>

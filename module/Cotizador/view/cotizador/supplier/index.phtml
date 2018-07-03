@@ -1,0 +1,65 @@
+<?php
+$this->headTitle('Proveedores');
+
+$this->mainMenu()->setActiveItemId('suppliers');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Proveedores' => $this->url('suppliers'),
+]);
+?>
+
+<h2>Proveedores</h2>
+<p>
+    <a class="btn btn-default" href="
+        <?= $this->url('suppliers', ['action' => 'add']); ?>">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+    </a>
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>Folio</th>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Datos Fiscales</th>
+        <th>Personal de Ventas</th>
+        <th>&nbsp;</th>
+    </tr>
+
+    <?php foreach ($suppliers as $supplier) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($supplier->getId()); ?></td>
+        <td><a href="<?= $this->url('suppliers', ['action' => 'view', 'id' => $supplier->getId()]); ?>">
+                <?= $this->escapeHtml($supplier->getName()); ?>
+            </a>
+        </td>
+        <td><?= $supplier->getCategoriesAsString() ?></td>
+        <td><?php
+        $taxData = '';
+        if ($supplier->getTaxAddress()) {
+            $taxData = 'Dirección: ' . $supplier->getTaxAddress();
+        }
+        if ($taxData != '') {
+            $taxData .= '<br>';
+        }
+        if ($supplier->getRfc()) {
+            $taxData .= 'R.F.C.: ' . $supplier->getRfc();
+        }
+        echo $taxData;
+        ?></td>
+        <td>&nbsp;</td>
+        <td>
+            <a class="btn btn-warning" 
+                href="<?=
+                $this->url(
+                    'suppliers',
+                    ['action' => 'edit', 'id' => $supplier->getId()]
+                );
+                ?>">
+                <span class="glyphicon glyphicon-pencil" ></span> Actualizar
+            </a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

@@ -1,0 +1,57 @@
+<?php
+$this->headTitle('Agregar Marca');
+
+$this->mainMenu()->setActiveItemId('brands');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Marcas' => $this->url('brands'),
+    'Agregar' => $this->url('brands', ['action' => 'add']),
+]);
+
+$form->get('name')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Zimaelectric'
+]);
+
+$form->get('description')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Descripción de la marca.'
+]);
+
+$form->get('submit')->setAttributes([
+    'value' => 'Crear',
+    'class' => 'btn btn-primary'
+]);
+
+$form->prepare();
+
+?>
+
+<h2>Agregar Marca</h2>
+
+<p>
+    Llene los siguientes campos y presione <i>Crear</i>.
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+        
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')); ?>
+            <?= $this->formElement($form->get('name')); ?>
+            <?= $this->formElementErrors($form->get('name')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('description')); ?>
+            <?= $this->formElement($form->get('description')); ?>
+            <?= $this->formElementErrors($form->get('description')); ?>                  
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+        
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>

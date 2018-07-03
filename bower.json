@@ -1,0 +1,14 @@
+{
+  "name": "sistema_integral",
+  "description": "Plataforma Integral",
+  "main": "",
+  "authors": [
+    "Zimaelectric Solutions S.A. de C.V."
+  ],
+  "license": "",
+  "homepage": "/",
+  "private": true,
+  "dependencies": {
+    "jquery-validation": "^1.17.0"
+  }
+}

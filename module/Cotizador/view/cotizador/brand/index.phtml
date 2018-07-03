@@ -1,0 +1,46 @@
+<?php
+$this->headTitle('Marcas');
+
+$this->mainMenu()->setActiveItemId('brands');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Marcas' => $this->url('brands'),
+]);
+?>
+
+<h2>Marcas</h2>
+<p>
+    <a class="btn btn-default" href="
+        <?= $this->url('brands', ['action' => 'add']); ?>">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+    </a>
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>&nbsp;</th>
+    </tr>
+
+    <?php foreach ($brands as $brand) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($brand->getId()); ?></td>
+        <td><?= $this->escapeHtml($brand->getName()); ?></td>
+        <td><?= $this->escapeHtml($brand->getDescription()); ?></td>
+        <td>
+            <a class="btn btn-warning" 
+                href="<?=
+                    $this->url(
+                        'brands',
+                        ['action' => 'edit', 'id' => $brand->getId()]
+                    );
+                ?>">
+                <span class="glyphicon glyphicon-pencil" ></span> Actualizar
+            </a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

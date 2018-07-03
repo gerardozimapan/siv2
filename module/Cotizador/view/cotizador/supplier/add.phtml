@@ -1,0 +1,219 @@
+<?php
+$this->headScript()->appendFile('/js/bankAccounts.js', 'text/javascript');
+$this->headTitle('Agregar Proveedor');
+
+$this->mainMenu()->setACtiveItemId('suppliers');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Proveedores' => $this->url('suppliers'),
+    'Agregar' => $this->url('suppliers', ['action' => 'add'])
+]);
+
+$this->FormMultiCheckbox()->setSeparator('<br>');
+$this->FormMultiCheckbox()->setLabelAttributes(['class' => 'form-check-label']);
+
+$form->get('name')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Empresa S.A.'
+]);
+
+$form->get('taxAddress')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Calle No. 0'
+]);
+
+$form->get('rfc')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'XXX000000-0A0'
+]);
+
+$form->get('paymentTerms')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '90 días'
+]);
+
+$form->get('creditLimit')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '1,000,000.00'
+]);
+
+$form->get('discount')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '10%'
+]);
+
+$form->get('deliveryTime')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '30 días'
+]);
+
+$form->get('comments')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Observaciones'
+]);
+
+$form->get('bankAccounts')->setAttributes([
+    'id' => 'bankAccountsInput',
+]);
+
+$form->get('submit')->setAttributes([
+    'value' => 'Crear',
+    'class' => 'btn btn-primary'
+]);
+
+$form->prepare();
+
+$formBankAccount->get('bank')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Bank of America',
+    'id' => 'bank'
+]);
+
+$formBankAccount->get('number')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '0123456789',
+    'id' => 'number'
+]);
+
+$formBankAccount->get('clabe')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '012345678901234567',
+    'id' => 'clabe'
+]);
+
+$this->formRadio()->setSeparator('<br>');
+$formBankAccount->get('currency')->setAttributes([
+    'id' => 'currency'
+]);
+
+// prepare bank account form
+$formBankAccount->prepare();
+
+?>
+
+<h2>Agregar Proveedor</h2>
+
+<p>
+    Llene los siguientes campos y presione <i>Crear</i>.
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+        
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')); ?>
+            <?= $this->formElement($form->get('name')); ?>
+            <?= $this->formElementErrors($form->get('name')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('categories')); ?><br>
+            <?= $this->formMultiCheckbox($form->get('categories')); ?>
+            <?= $this->formElementErrors($form->get('categories')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('taxAddress')); ?>
+            <?= $this->formElement($form->get('taxAddress')); ?>
+            <?= $this->formElementErrors($form->get('taxAddress')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('rfc')); ?>
+            <?= $this->formElement($form->get('rfc')); ?>
+            <?= $this->formElementErrors($form->get('rfc')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('paymentTerms')); ?>
+            <?= $this->formElement($form->get('paymentTerms')); ?>
+            <?= $this->formElementErrors($form->get('paymentTerms')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('creditLimit')); ?>
+            <?= $this->formElement($form->get('creditLimit')); ?>
+            <?= $this->formElementErrors($form->get('creditLimit')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('discount')); ?>
+            <?= $this->formElement($form->get('discount')); ?>
+            <?= $this->formElementErrors($form->get('discount')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('deliveryTime')); ?>
+            <?= $this->formElement($form->get('deliveryTime')); ?>
+            <?= $this->formElementErrors($form->get('deliveryTime')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <label>Cuentas Bancarias</label>&nbsp;<a href="#" data-toggle="modal" data-target="#bankAccountModal">Agregar</a>
+            <div id="bankAccounts">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('comments')); ?>
+            <?= $this->formElement($form->get('comments')); ?>
+            <?= $this->formElementErrors($form->get('comments')); ?>                  
+        </div>
+        
+
+        <?= $this->formElement($form->get('submit')); ?>
+        <?= $this->formHidden($form->get('bankAccounts')); ?>
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="bankAccountModal" tabindex="-1" role="dialog" aria-labelledby="bankAccountModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+            <div class="col-md-10">
+                <h4 class="modal-title" id="bankAccountModalLabel">Agregar Cuenta Bancaria</h4>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form id="bankAccountForm">
+        <div class="form-group">
+            <?= $this->formLabel($formBankAccount->get('bank')); ?>
+            <?= $this->formElement($formBankAccount->get('bank')); ?>
+            <?= $this->formElementErrors($formBankAccount->get('bank')); ?>                  
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($formBankAccount->get('number')); ?>
+            <?= $this->formElement($formBankAccount->get('number')); ?>
+            <?= $this->formElementErrors($formBankAccount->get('number')); ?>                  
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($formBankAccount->get('clabe')); ?>
+            <?= $this->formElement($formBankAccount->get('clabe')); ?>
+            <?= $this->formElementErrors($formBankAccount->get('clabe')); ?>                  
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($formBankAccount->get('currency')); ?><br>
+            <?= $this->formElement($formBankAccount->get('currency')); ?>
+            <?= $this->formElementErrors($formBankAccount->get('currency')); ?>                  
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="add">Agregar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

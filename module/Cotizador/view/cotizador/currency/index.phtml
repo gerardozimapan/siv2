@@ -1,0 +1,48 @@
+<?php
+$this->headTitle('Monedas');
+
+$this->mainMenu()->setActiveItemId('currencies');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Monedas' => $this->url('currencies'),
+]);
+?>
+
+<h2>Monedas</h2>
+<p>
+    <a class="btn btn-default" href="
+        <?= $this->url('currencies', ['action' => 'add']); ?>">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+    </a>
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Código</th>
+        <th>Símbolo</th>
+        <th>&nbsp;</th>
+    </tr>
+
+    <?php foreach ($currencies as $currency) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($currency->getId()); ?></td>
+        <td><?= $this->escapeHtml($currency->getName()); ?></td>
+        <td><?= $this->escapeHtml($currency->getCode()); ?></td>
+        <td><?= $this->escapeHtml($currency->getSymbol()); ?></td>
+        <td>
+            <a class="btn btn-warning" 
+                href="<?=
+                    $this->url(
+                        'currencies',
+                        ['action' => 'edit', 'id' => $currency->getId()]
+                    );
+                ?>">
+                <span class="glyphicon glyphicon-pencil" ></span> Actualizar
+            </a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

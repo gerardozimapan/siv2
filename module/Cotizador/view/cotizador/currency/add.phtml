@@ -1,0 +1,78 @@
+<?php
+$this->headTitle('Agregar Moneda');
+
+$this->mainMenu()->setACtiveItemId('currencies');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Monedas' => $this->url('currencies'),
+    'Agregar' => $this->url('currencies', ['action' => 'add'])
+]);
+
+$form->get('id')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '1'
+]);
+
+$form->get('name')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Pesos'
+]);
+
+$form->get('code')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'MXN'
+]);
+
+$form->get('symbol')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '$'
+]);
+
+$form->get('submit')->setAttributes([
+    'value' => 'Crear',
+    'class' => 'btn btn-primary'
+]);
+
+$form->prepare();
+
+?>
+
+<h2>Agregar Moneda</h2>
+
+<p>
+    Llene los siguientes campos y presione <i>Crear</i>.
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+        
+        <div class="form-group">
+            <?= $this->formLabel($form->get('id')); ?>
+            <?= $this->formElement($form->get('id')); ?>
+            <?= $this->formElementErrors($form->get('id')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')); ?>
+            <?= $this->formElement($form->get('name')); ?>
+            <?= $this->formElementErrors($form->get('name')); ?>                  
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('code')); ?>
+            <?= $this->formElement($form->get('code')); ?>
+            <?= $this->formElementErrors($form->get('code')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('symbol')); ?>
+            <?= $this->formElement($form->get('symbol')); ?>
+            <?= $this->formElementErrors($form->get('symbol')); ?>                  
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+        
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>

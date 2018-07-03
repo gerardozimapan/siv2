@@ -1,0 +1,86 @@
+<?php
+$this->headTitle('Revisar Cliente');
+
+$this->mainMenu()->setActiveItemId('clients');
+
+$this->pageBreadcrumbs()->setItems([
+            'Home' => $this->url('home'),
+            'Clientes' => $this->url('clients'),
+            'Revisar' => $this->url('clients', ['action' => 'view', 'id' => $client->getId()])
+            ]);
+?>
+
+<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
+<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
+<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
+
+<h2>Revisar <?= $this->escapeHtml($client->getName()) ?></h2>
+
+<p>
+    <a class="btn btn-default" href="<?= $this->url(
+        'clients',
+        ['action' => 'edit', 'id' => $client->getId()]
+    ); ?>">
+        <span class="glyphicon glyphicon-pencil" ></span> Actualizar
+    </a>
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th>Folio:</th>
+                <td><?= $this->escapeHtml($client->getId()) ?></th>
+            </tr>
+            <tr>
+                <th>Nombre:</th>
+                <td><?= $this->escapeHtml($client->getName()) ?></th>
+            </tr>
+            <tr>
+                <th>Dirección:</th>
+                <td><?= $this->escapeHtml($client->getTaxAddress()) ?></th>
+            </tr>
+            <tr>
+                <th>R.F.C.:</th>
+                <td><?= $this->escapeHtml($client->getRfc()) ?></th>
+            </tr>
+            <tr>
+                <th>Contactos</th>
+                <td>
+                    <?php foreach ($client->getContacts() as $contact) :
+                            $contactString = $contact->getName();
+                            $contactString .= '[ ' . $contact->getEmail();
+                            $contactString .= ' | ' . $contact->getPhoneNumber() . ' ]';
+                    ?>
+                    <?= $this->escapeHtml($contactString); ?>
+                    <?php endforeach; ?>
+                </td>
+            </tr>
+            <tr>
+                <th>Condiciones de Pago:</th>
+                <td><?= $this->escapeHtml($client->getPaymentTerms()) ?></th>
+            </tr>
+            <tr>
+                <th>Limite de Crédito:</th>
+                <td><?= $this->escapeHtml(
+                    $this->currencyFormat($client->getCreditLimit(), 'MXN', true, 'es_MX')
+                ) ?></th>
+            </tr>
+            <tr>
+                <th>Descuento:</th>
+                <td><?= $this->escapeHtml(
+                    $this->numberFormat(
+                        $client->getDiscount(),
+                        NumberFormatter::PERCENT,
+                        NumberFormatter::TYPE_DEFAULT,
+                        'es_MX'
+                    )
+                ) ?></th>
+            </tr>
+            <tr>
+                <th>Observaciones:</th>
+                <td><?= $this->escapeHtml($client->getComments()) ?></th>
+            </tr>
+        </table>
+    </div>
+</div>
