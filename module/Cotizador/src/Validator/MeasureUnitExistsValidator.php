@@ -2,38 +2,38 @@
 namespace Cotizador\Validator;
 
 use Zend\Validator\AbstractValidator;
-use Cotizador\Entity\Brand;
+use Cotizador\Entity\MeasureUnit;
 
 /**
- * This validator class is designed for checking if there is an existing brand
+ * This Validator class is designated for checking if there is an existing measure unit
  * with such name.
  */
-class BrandExistsValidator extends AbstractValidator
+class MeasureUnitExistsValidator extends AbstractValidator
 {
     /**
-     * Available validator options.
+     * Avalible validator options.
      * @var array
      */
     protected $options = [
         'entityManager' => null,
-        'brand'         => null,
+        'measureUnit'   => null,
     ];
 
     // Validation failure message IDs.
-    const NOT_SCALAR = 'notScalar';
-    const BRAND_EXISTS = 'brandExists';
+    const NOT_SCALAR          = 'notScalar';
+    const MEASURE_UNIT_EXISTS = 'measureUnitExists';
 
     /**
      * Validation failure messages.
      * @var array
      */
     protected $messageTemplate = [
-        self::NOT_SCALAR    => 'The name must be a scalr value',
-        self::BRAND_EXISTS  => 'Another brand with such name exists',
+        self::NOT_SCALAR          => 'The name must be a scalar value',
+        self::MEASURE_UNIT_EXISTS => 'Another measure unit with such name exists',
     ];
 
     /**
-     * Constructor.
+     * Constructor
      */
     public function __construct($options = null)
     {
@@ -42,8 +42,8 @@ class BrandExistsValidator extends AbstractValidator
             if (isset($options['entityManager'])) {
                 $this->options['entityManager'] = $options['entityManager'];
             }
-            if (isset($options['brand'])) {
-                $this->options['brand'] = $options['brand'];
+            if (isset($options['measureUnit'])) {
+                $this->options['measureUnit'] = $options['measureUnit'];
             }
         }
 
@@ -66,13 +66,13 @@ class BrandExistsValidator extends AbstractValidator
         // Get Doctrine entity manager.
         $entityManager = $this->options['entityManager'];
 
-        $brand = $entityManager->getRepository(Brand::class)
-                ->findOneByName($value);
+        $measureUnit = $entityManager->getRepository(MeasureUnit::class)
+            ->findOneByName($value);
 
-        if (null == $this->options['brand']) {
-            $isValid = (null == $brand);
+        if (null == $this->options['measureUnit']) {
+            $isValid = (null == $measureUnit);
         } else {
-            if ($this->options['brand']->getName() != $value && $brand != null) {
+            if ($this->options['measureUnit']->getName() != $value && $measureUnit != null) {
                 $isValid = false;
             } else {
                 $isValid = true;
@@ -81,7 +81,7 @@ class BrandExistsValidator extends AbstractValidator
 
         // If there were an error, set error message.
         if (! $isValid) {
-            $this->error(self::BRAND_EXISTS);
+            $this->error(self::MEASURE_UNIT_EXISTS);
         }
 
         // Return validation result.

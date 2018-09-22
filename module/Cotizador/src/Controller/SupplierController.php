@@ -12,7 +12,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 /**
- * This controller is reponsible for supplier management (adding, editing,
+ * This controller is responsible for supplier management (adding, editing,
  * viewing user).
  */
 class SupplierController extends AbstractActionController

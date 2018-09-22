@@ -96,7 +96,7 @@ class MeasureUnitManager
     public function checkMeasureUnitExists($name)
     {
         $measureUnit = $this->entityManager->getRepository(MeasureUnit::class)
-            ->FindOneByName($name);
+            ->findOneByName($name);
 
         return $measureUnit !== null;
     }

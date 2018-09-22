@@ -22,6 +22,10 @@ return [
                     'user'      => 'root',
                     'password'  => 'laS3guridadAnteT0do',
                     'dbname'    => 'si',
+                    'charset'  => 'utf8',
+                    'driverOptions' => [
+                        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+                    ],
                 ],
             ],
         ],
