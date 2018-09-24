@@ -94,7 +94,7 @@ class BrandManager
     public function checkBrandExists($name)
     {
         $brand = $this->entityManager->getRepository(Brand::class)
-            ->FindOneByName($name);
+            ->findOneByName($name);
 
         return $brand !== null;
     }

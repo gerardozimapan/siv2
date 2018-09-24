@@ -1,0 +1,46 @@
+<?php
+$this->headTitle('Unidades de Medida');
+
+$this->mainMenu()->setActiveItemId('measureUnits');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Unidades de Medida' => $this->url('measureUnits'),
+]);
+?>
+
+<h2>Marcas</h2>
+<p>
+    <a class="btn btn-default" href="
+        <?= $this->url('measureUnits', ['action' => 'add']); ?>">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+    </a>
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Código</th>
+        <th>&nbsp;</th>
+    </tr>
+
+    <?php foreach ($measureUnits as $measureUnit) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($measureUnit->getId()); ?></td>
+        <td><?= $this->escapeHtml($measureUnit->getName()); ?></td>
+        <td><?= $this->escapeHtml($measureUnit->getCode()); ?></td>
+        <td>
+            <a class="btn btn-warning" 
+                href="<?=
+                    $this->url(
+                        'measureUnits',
+                        ['action' => 'edit', 'id' => $measureUnit->getId()]
+                    );
+                ?>">
+                <span class="glyphicon glyphicon-pencil" ></span> Actualizar
+            </a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

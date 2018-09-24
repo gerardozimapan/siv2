@@ -118,6 +118,41 @@ class NavManager
                 ];
             }
 
+            // Determine whitch items must be displayed in Settings dropdown.
+            $settingsDropdownItems = [];
+
+            if ($this->rbacManager->isGranted(null, 'currency.manage')) {
+                $settingsDropdownItems[] = [
+                    'id'    => 'currencies',
+                    'label' => 'Manage Currencies',
+                    'link'  => $url('currencies'),
+                ];
+            }
+
+            if ($this->rbacManager->isGranted(null, 'category.manage')) {
+                $settingsDropdownItems[] = [
+                    'id'    => 'categories',
+                    'label' => 'Manage Categories',
+                    'link'  => $url('categories'),
+                ];
+            }
+
+            if ($this->rbacManager->isGranted(null, 'brand.manage')) {
+                $settingsDropdownItems[] = [
+                    'id'    => 'brands',
+                    'label' => 'Manage Brands',
+                    'link'  => $url('brands'),
+                ];
+            }
+
+            if (count($settingsDropdownItems) != 0) {
+                $items[] = [
+                    'id'    => 'settings',
+                    'label' => 'Settings',
+                    'dropdown' => $settingsDropdownItems,
+                ];
+            }
+
             $items[] = [
                 'id' => 'logout',
                 'label' => $this->authService->getIdentity(),

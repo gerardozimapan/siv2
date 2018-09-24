@@ -8,6 +8,7 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return [
     'controllers' => [
         'factories' => [
+            Controller\MeasureUnitController::class => Controller\Factory\MeasureUnitControllerFactory::class,
             Controller\BrandController::class => Controller\Factory\BrandControllerFactory::class,
             Controller\ClientController::class => Controller\Factory\ClientControllerFactory::class,
             Controller\SupplierController::class => Controller\Factory\SupplierControllerFactory::class,
@@ -87,6 +88,20 @@ return [
                     ],
                 ],
             ],
+            'measureUnits' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/measure-units[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\MeasureUnitController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
 
         ],
     ],
@@ -129,11 +144,16 @@ return [
                 // Give access to "index", "add", "edit", "view", "changePassword" actions to users having the "user.manage" permission.
                 //['actions' => ['index', 'add', 'edit', 'view', 'changePassword'], 'allow' => '+user.manage']
             ],
+            Controller\MeasureUnitController::class => [
+                // Give access to "index", "add", "edit", "view", "delete" actions to users having the "measure-unit.manage" permission.
+                ['actions' => ['index', 'add', 'edit', 'view', 'delete'], 'allow' => '*'],
+            ],
 
         ]
     ],
     'service_manager' => [
         'factories' => [
+            Service\MeasureUnitManager::class => Service\Factory\MeasureUnitManagerFactory::class,
             Service\BrandManager::class => Service\Factory\BrandManagerFactory::class,
             Service\ClientManager::class => Service\Factory\ClientManagerFactory::class,
             Service\SupplierManager::class => Service\Factory\SupplierManagerFactory::class,

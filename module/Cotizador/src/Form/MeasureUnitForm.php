@@ -26,10 +26,10 @@ class MeasureUnitForm extends Form
     /**
      * Constructor.
      */
-    public function __constructor($entityManager = null, $measureUnit = null)
+    public function __construct($entityManager = null, $measureUnit = null)
     {
         // Define form name
-        parent::__constructor('measure-unit-form');
+        parent::__construct('measure-unit-form');
 
         // Set POST method for this form
         $this->setAttribute('method', 'post');
