@@ -1,14 +1,14 @@
 <?php
 namespace Cotizador\Validator;
 
+use Cotizador\Entity\Component;
 use Zend\Validator\AbstractValidator;
-use Cotizador\Entity\Brand;
 
 /**
- * This validator class is designed for checking if there is an existing brand
+ * This validator class is designed for checking if there is an existing component
  * with such name.
  */
-class BrandExistsValidator extends AbstractValidator
+class ComponentExistValidator extends AbstractValidator
 {
     /**
      * Available validator options.
@@ -16,20 +16,20 @@ class BrandExistsValidator extends AbstractValidator
      */
     protected $options = [
         'entityManager' => null,
-        'brand'         => null,
+        'component'     => null,
     ];
 
     // Validation failure message IDs.
-    const NOT_SCALAR = 'notScalar';
-    const BRAND_EXISTS = 'brandExists';
+    const NOT_SCALAR       = 'notScalar';
+    const COMPONENT_EXISTS = 'componentExists';
 
     /**
      * Validation failure messages.
      * @var array
      */
-    protected $messageTemplate = [
-        self::NOT_SCALAR    => 'The name must be a scalar value',
-        self::BRAND_EXISTS  => 'Another brand with such name exists',
+    protected $messageTemplates = [
+        self::NOT_SCALAR       => 'The folio must be a scalar value',
+        self::COMPONENT_EXISTS => 'Another component with such folio exists',
     ];
 
     /**
@@ -40,19 +40,19 @@ class BrandExistsValidator extends AbstractValidator
         // Set filter options (if provided).
         if (is_array($options)) {
             if (isset($options['entityManager'])) {
-                $this->options['entityManager'] = $options['entityManager'];
+                $this->options['entityManager'] => $options['entityManager'];
             }
-            if (isset($options['brand'])) {
-                $this->options['brand'] = $options['brand'];
+            if (isset($options['component'])) {
+                $this->options['component'] => $options['component'];
             }
         }
 
         // Call the parent class constructor.
-        parent::__construct($options);
+        parent::__constructor($options);
     }
 
     /**
-     * Check if brand exists.
+     * Check if component exists.
      * @param string $value
      * @return boolean
      */
@@ -66,13 +66,13 @@ class BrandExistsValidator extends AbstractValidator
         // Get Doctrine entity manager.
         $entityManager = $this->options['entityManager'];
 
-        $brand = $entityManager->getRepository(Brand::class)
-                ->findOneByName($value);
-
-        if (null == $this->options['brand']) {
-            $isValid = (null == $brand);
+        $component = $entityManager->getRepository(Component::class)
+            ->findOneByFolio($value);
+        
+        if (null == $this->options['component']) {
+            $isValid = (null == $component);
         } else {
-            if ($this->options['brand']->getName() != $value && $brand != null) {
+            if ($this->options['component']->getFolio() != $value && $component != null) {
                 $isValid = false;
             } else {
                 $isValid = true;
@@ -81,7 +81,7 @@ class BrandExistsValidator extends AbstractValidator
 
         // If there were an error, set error message.
         if (! $isValid) {
-            $this->error(self::BRAND_EXISTS);
+            $this->error(self::COMPONENT_EXISTS);
         }
 
         // Return validation result.

@@ -4,7 +4,7 @@ namespace Cotizador\Form;
 use Zend\Form\Form;
 use Zend\InputFilter\InputFilter;
 use Zend\Filter\ToNull;
- use Cotizador\Validator\BrandExistsValidator;
+use Cotizador\Validator\BrandExistsValidator;
 
 /**
  * This form is used to collect brand's data.
