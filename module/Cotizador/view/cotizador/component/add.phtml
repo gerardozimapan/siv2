@@ -1,0 +1,116 @@
+
+<?php
+$this->headTitle('Agregar Componente');
+
+$this->mainMenu()->setActiveItemId('components');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Componentes' => $this->url('components'),
+    'Agregar' => $this->url('components', ['action' => 'add'])
+]);
+
+$this->FormRadio()->setSeparator('<br>');
+$this->FormRadio()->setLabelAttributes(['class' => 'form-check-label']);
+
+$form->get('folio')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'INS00001'
+]);
+
+$form->get('function')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'XXXXX'
+]);
+
+$form->get('description')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Descripción'
+]);
+
+$form->get('listCode')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '1234567'
+]);
+
+$form->get('supplier')->setAttributes([
+    'class' => 'form-control',
+]);
+
+$form->get('brand')->setAttributes([
+    'class' => 'form-control',
+]);
+
+$form->get('classification')->setAttributes([
+    'class' => 'form-control',
+
+]);
+
+$form->get('submit')->setAttributes([
+    'value' => 'Crear',
+    'class' => 'btn btn-primary'
+]);
+
+$form->prepare();
+?>
+
+<h2>Agregar Componente</h2>
+
+<p>Llene los siguientes campos y presione <i>Crear</i>.</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('folio')); ?>
+            <?= $this->formElement($form->get('folio')); ?>
+            <?= $this->formElementErrors($form->get('folio')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('function')); ?>
+            <?= $this->formElement($form->get('function')); ?>
+            <?= $this->formElementErrors($form->get('function')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('description')); ?>
+            <?= $this->formElement($form->get('description')); ?>
+            <?= $this->formElementErrors($form->get('description')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('listCode')); ?>
+            <?= $this->formElement($form->get('listCode')); ?>
+            <?= $this->formElementErrors($form->get('listCode')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('purchaseType')); ?><br>
+            <?= $this->formRadio($form->get('purchaseType')); ?>
+            <?= $this->formElementErrors($form->get('purchaseType')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('supplier')); ?>
+            <?= $this->formElement($form->get('supplier')); ?>
+            <?= $this->formElementErrors($form->get('supplier')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('brand')); ?>
+            <?= $this->formSelect($form->get('brand')); ?>
+            <?= $this->formElementErrors($form->get('brand')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('classification')); ?>
+            <?= $this->formSelect($form->get('classification')); ?>
+            <?= $this->formElementErrors($form->get('classification')); ?>
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>

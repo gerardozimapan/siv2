@@ -20,7 +20,8 @@ return [
                 'params' => [
                     'host'      => '127.0.0.1',
                     'user'      => 'root',
-                    'password'  => 'laS3guridadAnteT0do',
+                    // 'password'  => 'laS3guridadAnteT0do',
+                    'password'  => 'admin',
                     'dbname'    => 'si',
                     'charset'  => 'utf8',
                     'driverOptions' => [

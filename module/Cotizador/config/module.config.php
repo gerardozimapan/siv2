@@ -8,12 +8,14 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return [
     'controllers' => [
         'factories' => [
-            Controller\MeasureUnitController::class => Controller\Factory\MeasureUnitControllerFactory::class,
             Controller\BrandController::class => Controller\Factory\BrandControllerFactory::class,
-            Controller\ClientController::class => Controller\Factory\ClientControllerFactory::class,
-            Controller\SupplierController::class => Controller\Factory\SupplierControllerFactory::class,
             Controller\CategoryController::class => Controller\Factory\CategoryControllerFactory::class,
+            Controller\ClassificationController::class => Controller\Factory\ClassificationControllerFactory::class,
+            Controller\ClientController::class => Controller\Factory\ClientControllerFactory::class,
+            Controller\ComponentController::class => Controller\Factory\ComponentControllerFactory::class,
             Controller\CurrencyController::class => Controller\Factory\CurrencyControllerFactory::class,
+            Controller\MeasureUnitController::class => Controller\Factory\MeasureUnitControllerFactory::class,
+            Controller\SupplierController::class => Controller\Factory\SupplierControllerFactory::class,
         ],
     ],
     'router' => [
@@ -102,6 +104,34 @@ return [
                     ],
                 ],
             ],
+            'classifications' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/classifications[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\ClassificationController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
+            'components' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/components[/:action[/:id]]',
+                    'constraints' => [
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[a-zA-Z0-9_-]*',
+                    ],
+                    'defaults' => [
+                        'controller'    => Controller\ComponentController::class,
+                        'action'        => 'index',
+                    ],
+                ],
+            ],
 
         ],
     ],
@@ -148,16 +178,27 @@ return [
                 // Give access to "index", "add", "edit", "view", "delete" actions to users having the "measure-unit.manage" permission.
                 ['actions' => ['index', 'add', 'edit', 'view', 'delete'], 'allow' => '*'],
             ],
+            Controller\ClassificationController::class => [
+                // Give access to "index", "add", "edit", "view", "delete" actions to users having the "classification.manage" permission.
+                ['actions' => ['index', 'add', 'edit', 'view', 'delete'], 'allow' => '*'],
+            ],
+
+            Controller\ComponentController::class => [
+                // Give access to "index", "add", "edit", "view", "delete" actions to users having the "component.manage" permission.
+                ['actions' => ['index', 'add', 'edit', 'view', 'delete'], 'allow' => '*'],
+            ],
 
         ]
     ],
     'service_manager' => [
         'factories' => [
-            Service\MeasureUnitManager::class => Service\Factory\MeasureUnitManagerFactory::class,
             Service\BrandManager::class => Service\Factory\BrandManagerFactory::class,
-            Service\ClientManager::class => Service\Factory\ClientManagerFactory::class,
-            Service\SupplierManager::class => Service\Factory\SupplierManagerFactory::class,
             Service\CategoryManager::class => Service\Factory\CategoryManagerFactory::class,
+            Service\ClassificationManager::class => Service\Factory\ClassificationManagerFactory::class,
+            Service\ClientManager::class => Service\Factory\ClientManagerFactory::class,
+            Service\ComponentManager::class => Service\Factory\ComponentManagerFactory::class,
+            Service\MeasureUnitManager::class => Service\Factory\MeasureUnitManagerFactory::class,
+            Service\SupplierManager::class => Service\Factory\SupplierManagerFactory::class,
         ],
     ],
     'view_manager' => [

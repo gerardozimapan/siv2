@@ -1,6 +1,8 @@
 <?php
 namespace Cotizador\Controller;
 
+use Cotizador\Entity\Brand;
+use Cotizador\Entity\Classification;
 use Cotizador\Entity\Component;
 use Cotizador\Form\ComponentForm;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -55,8 +57,30 @@ class ComponentController extends AbstractActionController
         // Create component form.
         $form = new ComponentForm();
 
+        // Get the list of all availables brands (sorted by name).
+        $brands = $this->entityManager->getRepository(Brand::class)
+            ->findBy([], ['name' => 'ASC']);
+        
+        $brandList = [];
+        foreach ($brands as $brand) {
+            $brandList[$brand->getId()] = $brand->getName();
+        }
+
+        $form->get('brand')->setValueOptions($brandList);
+
+        // Get the list of all availables classification (sorted by name).
+        $classifications = $this->entityManager->getRepository(Classification::class)
+            ->findBy([], ['name' => 'ASC']);
+        
+        $classificationList = [];
+        foreach ($classifications as $classification) {
+            $classificationList[$classification->getId()] = $classification->getName();
+        }
+
+        $form->get('classification')->setValueOptions($classificationList);
+
         // Check if user has submitted the form.
-        if ($this->request()->isPost()) {
+        if ($this->getRequest()->isPost()) {
             // Fill in the form with POST data.
             $data = $this->params()->fromPost();
             $form->setData($data);

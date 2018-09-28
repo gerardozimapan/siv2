@@ -8,7 +8,7 @@ use Zend\Validator\AbstractValidator;
  * This validator class is designed for checking if there is an existing component
  * with such name.
  */
-class ComponentExistValidator extends AbstractValidator
+class ComponentExistsValidator extends AbstractValidator
 {
     /**
      * Available validator options.
@@ -40,15 +40,15 @@ class ComponentExistValidator extends AbstractValidator
         // Set filter options (if provided).
         if (is_array($options)) {
             if (isset($options['entityManager'])) {
-                $this->options['entityManager'] => $options['entityManager'];
+                $this->options['entityManager'] = $options['entityManager'];
             }
             if (isset($options['component'])) {
-                $this->options['component'] => $options['component'];
+                $this->options['component'] = $options['component'];
             }
         }
 
         // Call the parent class constructor.
-        parent::__constructor($options);
+        parent::__construct($options);
     }
 
     /**

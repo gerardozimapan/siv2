@@ -1,0 +1,46 @@
+<?php
+$this->headTitle('Grupos de Artículos');
+
+$this->mainMenu()->setActiveItemId('classifications');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Grupos de Artículos' => $this->url('classifications'),
+]);
+?>
+
+<h2>Grupos de Artículos</h2>
+<p>
+    <a class="btn btn-default" href="
+        <?= $this->url('classifications', ['action' => 'add']); ?>">
+        <span class="glyphicon glyphicon-plus" aria-hiden="true"></span> Agregar
+    </a>
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>&nbsp;</th>
+    </tr>
+
+    <?php foreach ($classifications as $classification) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($classification->getId()); ?></td>
+        <td><?= $this->escapeHtml($classification->getName()); ?></td>
+        <td><?= $this->escapeHtml($classification->getDescription()); ?></td>
+        <td>
+            <a class="btn btn-warning"
+                href="<?=
+                    $this->url(
+                        'classifications',
+                        ['action' => 'edit', 'id' => $classification->getId()]
+                    );
+                ?>">
+                <span class="glyphicon glyphicon-pencil"></span> Actualizar
+            </a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

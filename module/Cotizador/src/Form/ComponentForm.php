@@ -2,6 +2,7 @@
 namespace Cotizador\Form;
 
 use Cotizador\Validator\ComponentExistsValidator;
+use Cotizador\Entity\Component;
 use Zend\Form\Form;
 use Zend\Form\Fieldset;
 use Zend\InputFilter\InputFilter;
@@ -12,7 +13,7 @@ use Zend\I18n\Validator\IsFloat;
 use Zend\Filter\ToNull;
 
 /**
- * This form is used to caollect component's data.
+ * This form is used to collect component's data.
  */
 class ComponentForm extends Form
 {
@@ -267,7 +268,7 @@ class ComponentForm extends Form
             'filters'  => [
                 ['name' => 'StringTrim'],
             ],
-            'Validators' => [
+            'validators' => [
                 [
                     'name'  => 'StringLength',
                     'options' => [
@@ -276,10 +277,354 @@ class ComponentForm extends Form
                     ],
                 ],
                 [
-                    'name' => ComponentExistValidator::class,
+                    'name' => ComponentExistsValidator::class,
                     'options' => [
                         'entityManager' => $this->entityManager,
                         'component'     => $this->component,
+                    ],
+                ],
+            ],
+        ]);
+
+        // Add input for "function" field.
+        $inputFilter->add([
+            'name'     => 'function',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'ToNull'],
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name'    => 'StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 64,
+                    ],
+                ]
+            ],
+        ]);
+
+        // Add input for 'description' field.
+        $inputFilter->add([
+            'name'     => 'description',
+            'required' => true,
+            'filters'  => [
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name'    => 'StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 254,
+                    ],
+                ]
+            ],
+        ]);
+
+        // Add input for "listCode" field.
+        $inputFilter->add([
+            'name'     => 'listCode',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'ToNull'],
+                ['name' => 'StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 64,
+                    ],
+                ],
+            ],
+        ]);
+
+        // Add input for "purchaseType" field.
+        $inputFilter->add([
+            'name'     => 'purchaseType',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'ToInt'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name'    => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ],
+            ],
+        ]);
+
+        // Add input for "supplier" field.
+        $inputFilter->add([
+            'name'     => 'supplier',
+            'required' => true,
+            'filters'  => [
+                ['name' => 'ToInt'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ],
+            ],
+        ]);
+
+        // Add input for "brand" field.
+        $inputFilter->add([
+            'name'     => 'brand',
+            'required' => true,
+            'filters'  => [
+                ['name' => 'ToInt'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ],
+            ],
+        ]);
+
+        // Add input filter for "classification" field.
+        $inputFilter->add([
+            'name'     => 'classification',
+            'required' => true,
+            'filters'  => [
+                ['name' => 'ToInt'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ],
+            ],
+        ]);
+
+        // Add input filter for "purchaseUnit" field.
+        $inputFilter->add([
+            'name'     => 'purchaseUnit',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'ToInt'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ],
+            ],
+        ]);
+
+                // Add input filter for "purchaseUnit" field.
+        $inputFilter->add([
+            'name'     => 'purchaseUnit',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'ToInt'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ],
+            ],
+        ]);
+
+        // Add input filter for "inventoryUnit" field.
+        $inputFilter->add([
+            'name'     => 'inventoryUnit',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'ToInt'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ],
+            ],
+        ]);
+
+        // Add input filter for "presentation" field.
+        $inputFilter->add([
+            'name'     => 'presentation',
+            'required' => false,
+            'filters' => [
+                ['name' => 'StringTrim'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 64,
+                    ],
+                ],
+            ],
+        ]);
+
+        // Add input filter for "amountPresentation" field.
+        $inputFilter->add([
+            'name'     => 'amountPresentation',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'ToInt'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ],
+            ],
+        ]);
+
+        // Add input filter for "unitPricePurchase" field.
+        $inputFilter->add([
+            'name'     => 'unitPricePurchase',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'NumberParse'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'IsFloat'
+                ]
+            ],
+        ]);
+
+        // Add input filter for "presentationPurchasePrice" field.
+        $inputFilter->add([
+            'name'     => 'presentationPurchasePrice',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'NumberParse'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'IsFloat'
+                ]
+            ],
+        ]);
+
+        // Add input filter for "saleUnitPrice" field.
+        $inputFilter->add([
+            'name'     => 'saleUnitPrice',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'NumberParse'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'IsFloat'
+                ]
+            ],
+        ]);
+
+        // Add input filter for "saleTotalPrice" field.
+        $inputFilter->add([
+            'name'     => 'saleTotalPrice',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'NumberParse'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'IsFloat'
+                ]
+            ],
+        ]);
+
+        // Add input filter for "unitPriceImportPurchase" field.
+        $inputFilter->add([
+            'name'     => 'unitPriceImportPurchase',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'NumberParse'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'IsFloat'
+                ]
+            ],
+        ]);
+
+        // Add input filter for "importSalePrice" field.
+        $inputFilter->add([
+            'name'     => 'importSalePrice',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'NumberParse'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'IsFloat'
+                ]
+            ],
+        ]);
+
+        // Add input filter for "currency" field.
+        $inputFilter->add([
+            'name'     => 'currency',
+            'required' => true,
+            'filters'  => [
+                ['name' => 'ToInt'],
+            ],
+            'validators' => [
+                [
+                    'name'    => 'GreaterThan',
+                    'options' => ['min' => 1],
+                ]
+            ],
+        ]);
+
+        // Add input filter for "supplierDeliveryTime" field.
+        $inputFilter->add([
+            'name'     => 'supplierDeliveryTime',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'StringTrim'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 64
+                    ],
+                ],
+            ],
+        ]);
+
+        // Add input filter for "files" field.
+        // Add input filter for "satCode" field.
+        $inputFilter->add([
+            'name'     => 'satCode',
+            'required' => false,
+            'filters'  => [
+                ['name' => 'StringTrim'],
+                ['name' => 'ToNull'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    'options' => [
+                        'min' => 1,
+                        'max' => 32,
                     ],
                 ],
             ],
