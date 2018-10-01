@@ -8,6 +8,7 @@ use Zend\ServiceManager\Factory\InvokableFactory;
 return [
     'controllers' => [
         'factories' => [
+            Controller\MeasureUnitController::class => Controller\Factory\MeasureUnitControllerFactory::class,
             Controller\BrandController::class => Controller\Factory\BrandControllerFactory::class,
             Controller\CategoryController::class => Controller\Factory\CategoryControllerFactory::class,
             Controller\ClassificationController::class => Controller\Factory\ClassificationControllerFactory::class,
@@ -192,6 +193,7 @@ return [
     ],
     'service_manager' => [
         'factories' => [
+            Service\MeasureUnitManager::class => Service\Factory\MeasureUnitManagerFactory::class,
             Service\BrandManager::class => Service\Factory\BrandManagerFactory::class,
             Service\CategoryManager::class => Service\Factory\CategoryManagerFactory::class,
             Service\ClassificationManager::class => Service\Factory\ClassificationManagerFactory::class,
