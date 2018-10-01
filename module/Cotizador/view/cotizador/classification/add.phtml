@@ -1,53 +1,56 @@
 <?php
-$this->headTitle('Actualizar Marca');
+$this->headTitle('Agregar Grupo de Artículos');
 
-$this->mainMenu()->setActiveItemId('brands');
+$this->mainMenu()->setActiveItemId('classifications');
 
 $this->pageBreadcrumbs()->setItems([
     'Home' => $this->url('home'),
-    'Marcas' => $this->url('brands'),
-    'Actualizar' => $this->url('brands', ['action' => 'edit'])
+    'Grupos de Artículos' => $this->url('classifications'),
+    'Agregar' => $this->url('classifications', ['action' => 'add']),
 ]);
 
 $form->get('name')->setAttributes([
     'class' => 'form-control',
-    'placeholder' => 'Zimaelectric'
+    'placeholder' => 'RELEVADORES'
 ]);
 
 $form->get('description')->setAttributes([
     'class' => 'form-control',
-    'placeholder' => 'Descripción de la marca.'
+    'placeholder' => 'Descripción del grupo de artículos'
 ]);
 
 $form->get('submit')->setAttributes([
-    'value' => 'Actualizar',
+    'value' => 'Crear',
     'class' => 'btn btn-primary'
 ]);
 
 $form->prepare();
-
 ?>
 
-<h2>Actualizar <i><?= $this->escapeHtml($brand->getName()); ?></i></h2>
+<h2>Agregar Grupo de Artículos</h2>
+
+<p>
+    Llene los siguientes campos y presione <i>Crear</i>.
+</p>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col_md-6">
         <?= $this->form()->openTag($form); ?>
-        
+
         <div class="form-group">
             <?= $this->formLabel($form->get('name')); ?>
             <?= $this->formElement($form->get('name')); ?>
-            <?= $this->formElementErrors($form->get('name')); ?>                  
+            <?= $this->formElementErrors($form->get('name')); ?>
         </div>
 
         <div class="form-group">
             <?= $this->formLabel($form->get('description')); ?>
             <?= $this->formElement($form->get('description')); ?>
-            <?= $this->formElementErrors($form->get('description')); ?>                  
+            <?= $this->formElementErrors($form->get('description')); ?>
         </div>
 
         <?= $this->formElement($form->get('submit')); ?>
-        
+
         <?= $this->form()->closeTag(); ?>
     </div>
 </div>

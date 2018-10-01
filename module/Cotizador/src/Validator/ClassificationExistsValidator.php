@@ -69,7 +69,7 @@ class ClassificationExistsValidator extends AbstractValidator
         $classification = $entityManager->getRepository(Classification::class)
                 ->findOneByName($value);
 
-        if (null == $this->option['classification']) {
+        if (null == $this->options['classification']) {
             $isValid = (null == $classification);
         } else {
             if ($this->options['classification']->getName() != $value && $classification != null) {

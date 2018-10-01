@@ -4,6 +4,8 @@ namespace Cotizador\Controller;
 use Cotizador\Entity\Brand;
 use Cotizador\Entity\Classification;
 use Cotizador\Entity\Component;
+use Cotizador\Entity\Currency;
+use Cotizador\Entity\MeasureUnit;
 use Cotizador\Form\ComponentForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -78,6 +80,29 @@ class ComponentController extends AbstractActionController
         }
 
         $form->get('classification')->setValueOptions($classificationList);
+
+        // Get the list of all availables measure units (sorted by name).
+        $measureUnits = $this->entityManager->getRepository(MeasureUnit::class)
+            ->findBy([], ['name' => 'ASC']);
+
+        $measureUnitList = [];
+        foreach ($measureUnits as $mesaureUnit) {
+            $measureUnitList[$mesaureUnit->getId()] = $mesaureUnit->getName() . ' (' . $mesaureUnit->getCode() . ')';
+        }
+
+        $form->get('purchaseUnit')->setValueOptions($measureUnitList);
+        $form->get('inventoryUnit')->setValueOptions($measureUnitList);
+
+        // Get the list of all availables currencies (sorted by name).
+        $currencies = $this->entityManager->getRepository(Currency::class)
+            ->findBy([], ['name' => 'ASC']);
+
+        $currencyList = [];
+        foreach ($currencies as $currency) {
+            $currencyList[$currency->getId()] = $currency->getCode();
+        }
+
+        $form->get('currency')->setValueOptions($currencyList);
 
         // Check if user has submitted the form.
         if ($this->getRequest()->isPost()) {

@@ -39,11 +39,11 @@ class ClassificationController extends AbstractActionController
      */
     public function indexAction()
     {
-        $classification = $this->entityManager->getRepository(Classification::class)
+        $classifications = $this->entityManager->getRepository(Classification::class)
             ->findBy([], ['id' => 'ASC']);
 
         return new ViewModel([
-            'classification' => $classification,
+            'classifications' => $classifications,
         ]);
     }
 

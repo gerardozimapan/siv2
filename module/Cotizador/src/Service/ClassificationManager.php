@@ -95,7 +95,7 @@ class ClassificationManager
     public function checkClassificationExists($name)
     {
         $classification = $this->entityManager->getRepository(Classification::class)
-            ->FindOneByName($name);
+            ->findOneByName($name);
 
         return $classification !== null;
     }

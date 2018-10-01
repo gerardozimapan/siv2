@@ -26,10 +26,10 @@ class ClassificationForm extends Form
     /**
      * Constructor.
      */
-    public function __constructor($entityManager = null, $classification = null)
+    public function __construct($entityManager = null, $classification = null)
     {
         // Define form name
-        parent::__constructor('classification-form');
+        parent::__construct('classification-form');
 
         // Set POST method for this form
         $this->setAttribute('method', 'post');
