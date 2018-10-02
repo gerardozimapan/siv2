@@ -1,0 +1,51 @@
+<?php
+$this->headTitle('Artículos');
+
+$this->mainMenu()->setActiveItemId('components');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Componentes' => $this->url('components'),
+]);
+?>
+
+<h2>Componentes</h2>
+<p><a class="btn btn-default" href="
+        <?= $this->url('components', ['action' => 'add']); ?>">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar
+    </a>
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>Folio</th>
+        <th>Descripción</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>P.U.C.</th>
+        <th>Moneda</th>
+        <th>&nbsp;</th>
+    </tr>
+
+    <?php foreach ($components as $component) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($component->getFolio()); ?></td>
+        <td><?= $this->escapeHtml($component->getDescription()); ?></td>
+        <td><?= $this->escapeHtml($component->getBrand()->getName()); ?></td>
+        <td><?= $this->escapeHtml($component->getListCode()); ?></td>
+        <td><?= $this->escapeHtml($component->getUnitPricePurchase()); ?></td>
+        <td><?= $this->escapeHtml($component->getCurrency()->getCode()); ?></td>
+        <td>
+            <a class="btn btn-warning"
+                href="<?=
+                    $this->url(
+                        'components',
+                        ['action' => 'edit', 'id' => $component->getId()]
+                    );
+                ?>">
+                <span class="glyphicon glyphicon-pencil"></span> Actualizar
+            </a>
+        </td>
+    </tr>
+    <?php endforeach; ?>
+</table>

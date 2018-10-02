@@ -18,15 +18,31 @@ use Zend\Filter\ToNull;
 class ComponentForm extends Form
 {
     /**
+     * Entity manager.
+     * @var Doctrine\ORM\EntityManager
+     */
+    private $entityManager = null;
+
+    /**
+     * Current component.
+     * @var Cotizador\Entity\Component
+     */
+    private $component = null;
+
+    /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct($entityManager = null, $component = null)
     {
         // Define form name.
         parent::__construct('component-form');
 
         // Set POST method for this form.
         $this->setAttribute('method', 'post');
+
+        // Save parameters for internal use.
+        $this->entityManager = $entityManager;
+        $this->component = $component;
 
         $this->addElements();
         $this->addInputFilter();
@@ -353,7 +369,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name'    => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ],
             ],
         ]);
@@ -368,7 +384,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name' => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ],
             ],
         ]);
@@ -383,7 +399,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name' => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ],
             ],
         ]);
@@ -398,7 +414,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name' => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ],
             ],
         ]);
@@ -414,7 +430,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name' => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ],
             ],
         ]);
@@ -430,7 +446,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name' => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ],
             ],
         ]);
@@ -446,7 +462,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name' => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ],
             ],
         ]);
@@ -481,7 +497,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name' => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ],
             ],
         ]);
@@ -586,7 +602,7 @@ class ComponentForm extends Form
             'validators' => [
                 [
                     'name'    => 'GreaterThan',
-                    'options' => ['min' => 1],
+                    'options' => ['min' => 0],
                 ]
             ],
         ]);

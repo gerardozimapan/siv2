@@ -1,7 +1,12 @@
 <?php
 namespace Cotizador\Service;
 
+use Cotizador\Entity\Brand;
+use Cotizador\Entity\Classification;
 use Cotizador\Entity\Component;
+use Cotizador\Entity\Currency;
+use Cotizador\Entity\MeasureUnit;
+use Cotizador\Entity\Supplier;
 
 /**
  * This service is responsible for adding/editing components
@@ -35,6 +40,30 @@ class ComponentManager
             throw new \Exception("Component with description " . $data['description'] . " already exists.");
         }
 
+        // Get supplier entity.
+        $supplier = $this->entityManager->getRepository(Supplier::class)
+            ->find((int) $data['supplier']);
+
+        // Get brand entity.
+        $brand = $this->entityManager->getRepository(Brand::class)
+            ->find((int) $data['brand']);
+
+        // Get classification entity.
+        $classification = $this->entityManager->getRepository(Classification::class)
+            ->find((int) $data['classification']);
+
+        // Get purchase unit (measureUnit) entity.
+        $purchaseUnit = $this->entityManager->getRepository(MeasureUnit::class)
+            ->find((int) $data['purchaseUnit']);
+        
+        // Get inventory unit (measureUnit) entity.
+        $inventoryUnit = $this->entityManager->getRepository(MeasureUnit::class)
+            ->find((int) $data['inventoryUnit']);
+        
+        // Get currency entity.
+        $currency = $this->entityManager->getRepository(Currency::class)
+            ->find((int) $data['currency']);
+
         // Create new Component entity.
         $component = new Component();
         $component->setFolio($data['folio']);
@@ -42,22 +71,21 @@ class ComponentManager
         $component->setDescription($data['description']);
         $component->setListCode($data['listCode']);
         $component->setPurchaseType($data['purchaseType']);
-        $component->setSupplier($data['supplier']);
-        $component->setBrand($data['brand']);
-        $component->setClasification($data['classification']);
-        $component->setPurchaseUnit($data['purchaseUnit']);
-        $component->setInventoryUnit($data['inventoryUnit']);
+        $component->setSupplier($supplier);
+        $component->setBrand($brand);
+        $component->setClassification($classification);
+        $component->setPurchaseUnit($purchaseUnit);
+        $component->setInventoryUnit($inventoryUnit);
         $component->setPresentation($data['presentation']);
         $component->setAmountPresentation($data['amountPresentation']);
-        $component->setUnitPricePresentation($data['pricePresentation']);
         $component->setPresentationPurchasePrice($data['presentationPurchasePrice']);
         $component->setSaleUnitPrice($data['saleUnitPrice']);
         $component->setSaleTotalPrice($data['saleTotalPrice']);
         $component->setUnitPriceImportPurchase($data['unitPriceImportPurchase']);
         $component->setImportSalePrice($data['importSalePrice']);
-        $component->setCurrency($data['currency']);
+        $component->setCurrency($currency);
         $component->setSupplierDeliveryTime($data['supplierDeliveryTime']);
-        $component->setDatashetFile($data['datasheetFile']);
+        $component->setDatasheetFile($data['datasheetFile']);
         $component->setImageFile($data['imageFile']);
         $component->setSatCode($data['satCode']);
 
@@ -92,12 +120,11 @@ class ComponentManager
         $component->setPurchaseType($data['purchaseType']);
         $component->setSupplier($data['supplier']);
         $component->setBrand($data['brand']);
-        $component->setClasification($data['classification']);
+        $component->setClassification($data['classification']);
         $component->setPurchaseUnit($data['purchaseUnit']);
         $component->setInventoryUnit($data['inventoryUnit']);
         $component->setPresentation($data['presentation']);
         $component->setAmountPresentation($data['amountPresentation']);
-        $component->setUnitPricePresentation($data['pricePresentation']);
         $component->setPresentationPurchasePrice($data['presentationPurchasePrice']);
         $component->setSaleUnitPrice($data['saleUnitPrice']);
         $component->setSaleTotalPrice($data['saleTotalPrice']);
@@ -105,7 +132,7 @@ class ComponentManager
         $component->setImportSalePrice($data['importSalePrice']);
         $component->setCurrency($data['currency']);
         $component->setSupplierDeliveryTime($data['supplierDeliveryTime']);
-        $component->setDatashetFile($data['datasheetFile']);
+        $component->setDatasheetFile($data['datasheetFile']);
         $component->setImageFile($data['imageFile']);
         $component->setSatCode($data['satCode']);
 

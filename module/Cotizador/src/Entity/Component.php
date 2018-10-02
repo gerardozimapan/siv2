@@ -389,9 +389,9 @@ class Component
      * Sets presentation purchase price.
      * @param decimal $presentationPurchasePrice
      */
-    public function setPresentationPruchasePrice($presentationPurchasePrice)
+    public function setPresentationPurchasePrice($presentationPurchasePrice)
     {
-        $this->presentationPruchasePrice = $presentationPurchasePrice;
+        $this->presentationPurchasePrice = $presentationPurchasePrice;
     }
 
     /**

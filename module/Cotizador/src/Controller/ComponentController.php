@@ -57,7 +57,7 @@ class ComponentController extends AbstractActionController
     public function addAction()
     {
         // Create component form.
-        $form = new ComponentForm();
+        $form = new ComponentForm($this->entityManager);
 
         // Get the list of all availables brands (sorted by name).
         $brands = $this->entityManager->getRepository(Brand::class)
