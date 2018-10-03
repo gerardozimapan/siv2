@@ -1,0 +1,261 @@
+<?php
+$this->headTitle('Actualizar Componente');
+
+$this->mainMenu()->setActiveItemId('components');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Componentes' => $this->url('components'),
+    'Actualizar' => $this->url('components', ['action' => 'edit'])
+]);
+
+$this->FormRadio()->setSeparator('<br>');
+$this->FormRadio()->setLabelAttributes(['class' => 'form-check-label']);
+
+$form->get('folio')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'INS00001'
+]);
+
+$form->get('function')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'XXXXX'
+]);
+
+$form->get('description')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Descripción'
+]);
+
+$form->get('listCode')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '1234567'
+]);
+
+$form->get('supplier')->setAttributes([
+    'class' => 'form-control',
+]);
+
+$form->get('brand')->setAttributes([
+    'class' => 'form-control',
+]);
+
+$form->get('classification')->setAttributes([
+    'class' => 'form-control',
+
+]);
+
+$form->get('purchaseUnit')->setAttributes([
+    'class' => 'form-control',
+]);
+
+$form->get('inventoryUnit')->setAttributes([
+    'class' => 'form-control',
+]);
+
+$form->get('presentation')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => 'Caja'
+]);
+
+$form->get('amountPresentation')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '3 Piezas X Caja'
+]);
+
+$form->get('unitPricePurchase')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '$ 1,000.00'
+]);
+
+$form->get('presentationPurchasePrice')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '$ 1,000.00'
+]);
+
+$form->get('saleUnitPrice')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '$9,999.99'
+]);
+
+$form->get('saleTotalPrice')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '$9,999.99'
+]);
+
+$form->get('unitPriceImportPurchase')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '$9,999.90'
+]);
+
+$form->get('importSalePrice')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '$9,999.99'
+]);
+
+
+$form->get('supplierDeliveryTime')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '30 días'
+]);
+
+$form->get('files')->setAttributes([
+    'class' => 'form-check',
+]);
+
+$form->get('satCode')->setAttributes([
+    'class' => 'form-control',
+    'placeholder' => '0000000'
+]);
+
+$form->get('submit')->setAttributes([
+    'value' => 'Actualizar',
+    'class' => 'btn btn-primary'
+]);
+
+$form->prepare();
+?>
+
+<h2>Actualizar <i><?= $this->escapeHtml($component->getFolio()); ?></i></h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('folio')); ?>
+            <?= $this->formElement($form->get('folio')); ?>
+            <?= $this->formElementErrors($form->get('folio')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('function')); ?>
+            <?= $this->formElement($form->get('function')); ?>
+            <?= $this->formElementErrors($form->get('function')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('description')); ?>
+            <?= $this->formElement($form->get('description')); ?>
+            <?= $this->formElementErrors($form->get('description')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('listCode')); ?>
+            <?= $this->formElement($form->get('listCode')); ?>
+            <?= $this->formElementErrors($form->get('listCode')); ?>
+        </div>
+
+        <div class="form-check">
+            <?= $this->formLabel($form->get('purchaseType')); ?><br>
+            <?= $this->formRadio($form->get('purchaseType')); ?>
+            <?= $this->formElementErrors($form->get('purchaseType')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('supplier')); ?>
+            <?= $this->formElement($form->get('supplier')); ?>
+            <?= $this->formElementErrors($form->get('supplier')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('brand')); ?>
+            <?= $this->formSelect($form->get('brand')); ?>
+            <?= $this->formElementErrors($form->get('brand')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('classification')); ?>
+            <?= $this->formSelect($form->get('classification')); ?>
+            <?= $this->formElementErrors($form->get('classification')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('purchaseUnit')); ?>
+            <?= $this->formSelect($form->get('purchaseUnit')); ?>
+            <?= $this->formElementErrors($form->get('purchaseUnit')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('inventoryUnit')); ?>
+            <?= $this->formSelect($form->get('inventoryUnit')); ?>
+            <?= $this->formElementErrors($form->get('inventoryUnit')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('presentation')); ?>
+            <?= $this->formElement($form->get('presentation')); ?>
+            <?= $this->formElementErrors($form->get('presentation')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('amountPresentation')); ?>
+            <?= $this->formElement($form->get('amountPresentation')); ?>
+            <?= $this->formElementErrors($form->get('amountPresentation')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('unitPricePurchase')); ?>
+            <?= $this->formElement($form->get('unitPricePurchase')); ?>
+            <?= $this->formElementErrors($form->get('unitPricePurchase')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('presentationPurchasePrice')); ?>
+            <?= $this->formElement($form->get('presentationPurchasePrice')); ?>
+            <?= $this->formElementErrors($form->get('presentationPurchasePrice')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('saleUnitPrice')); ?>
+            <?= $this->formElement($form->get('saleUnitPrice')); ?>
+            <?= $this->formElementErrors($form->get('saleUnitPrice')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('saleTotalPrice')); ?>
+            <?= $this->formElement($form->get('saleTotalPrice')); ?>
+            <?= $this->formElementErrors($form->get('saleTotalPrice')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('unitPriceImportPurchase')); ?>
+            <?= $this->formElement($form->get('unitPriceImportPurchase')); ?>
+            <?= $this->formElementErrors($form->get('unitPriceImportPurchase')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('importSalePrice')); ?>
+            <?= $this->formElement($form->get('importSalePrice')); ?>
+            <?= $this->formElementErrors($form->get('importSalePrice')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('currency')); ?><br>
+            <?= $this->formRadio($form->get('currency')); ?>
+            <?= $this->formElementErrors($form->get('currency')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('supplierDeliveryTime')); ?>
+            <?= $this->formElement($form->get('supplierDeliveryTime')); ?>
+            <?= $this->formElementErrors($form->get('supplierDeliveryTime')); ?>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('files')); ?>
+            <?= $this->formFile($form->get('files')); ?>
+            <?= $this->formElementErrors($form->get('files')); ?>
+            <div class="hint">(PDF, JPG and PNG formats are allowed)</div>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('satCode')); ?>
+            <?= $this->formElement($form->get('satCode')); ?>
+            <?= $this->formElementErrors($form->get('satCode')); ?>
+        </div>
+
+        <?= $this->formElement($form->get('submit')); ?>
+        <?= $this->form()->closeTag(); ?>
+    </div>
+</div>

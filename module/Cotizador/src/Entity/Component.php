@@ -11,8 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Component
 {
     // Purchase type constants.
-    const PURCHASE_NATIONAL = 0;
-    const PURCHASE_IMPORTED = 1;
+    const PURCHASE_NATIONAL = 1;
+    const PURCHASE_IMPORTED = 2;
 
     /**
      * @ORM\Id

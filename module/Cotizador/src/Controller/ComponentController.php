@@ -167,7 +167,7 @@ class ComponentController extends AbstractActionController
             return;
         }
 
-        $component = $this->entityManager->gerRepository(Component::class)
+        $component = $this->entityManager->getRepository(Component::class)
             ->find($id);
         
         if (null == $component) {
@@ -176,12 +176,59 @@ class ComponentController extends AbstractActionController
         }
 
         // Create component form.
-        $form = new ComponentForm();
+        $form = new ComponentForm($this->entityManager, $component);
+
+        // Get the list of all availables brands (sorted by name).
+        $brands = $this->entityManager->getRepository(Brand::class)
+            ->findBy([], ['name' => 'ASC']);
+        
+        $brandList = [];
+        foreach ($brands as $brand) {
+            $brandList[$brand->getId()] = $brand->getName();
+        }
+
+        $form->get('brand')->setValueOptions($brandList);
+
+        // Get the list of all availables classification (sorted by name).
+        $classifications = $this->entityManager->getRepository(Classification::class)
+            ->findBy([], ['name' => 'ASC']);
+        
+        $classificationList = [];
+        foreach ($classifications as $classification) {
+            $classificationList[$classification->getId()] = $classification->getName();
+        }
+
+        $form->get('classification')->setValueOptions($classificationList);
+
+        // Get the list of all availables measure units (sorted by name).
+        $measureUnits = $this->entityManager->getRepository(MeasureUnit::class)
+            ->findBy([], ['name' => 'ASC']);
+
+        $measureUnitList = [];
+        foreach ($measureUnits as $mesaureUnit) {
+            $measureUnitList[$mesaureUnit->getId()] = $mesaureUnit->getName() . ' (' . $mesaureUnit->getCode() . ')';
+        }
+
+        $form->get('purchaseUnit')->setValueOptions($measureUnitList);
+        $form->get('inventoryUnit')->setValueOptions($measureUnitList);
+
+        // Get the list of all availables currencies (sorted by name).
+        $currencies = $this->entityManager->getRepository(Currency::class)
+            ->findBy([], ['name' => 'ASC']);
+
+        $currencyList = [];
+        foreach ($currencies as $currency) {
+            $currencyList[$currency->getId()] = $currency->getCode();
+        }
+
+        $form->get('currency')->setValueOptions($currencyList);
+
+
 
         // Check if user has submitted the form.
         if ($this->getRequest()->isPost()) {
             // Fill in the form with POST data.
-            $data = $this->params()->fromRoute();
+            $data = $this->params()->fromPost();
             $form->setData($data);
 
             // Validate form.
@@ -200,29 +247,29 @@ class ComponentController extends AbstractActionController
             }
         } else {
             $form->setData([
-                'folio'                         => $component->getFolio(),
-                'function'                      => $component->getFunction(),
-                'description'                   => $component->getDescription(),
-                'list_code'                     => $component->getListCode(),
-                'purchase_type'                 => $component->getPurchaseType(),
-                'supplier_id'                   => $component->getSupplier(),
-                'brand_id'                      => $component->getBrand(),
-                'classification_id'             => $component->getClasification(),
-                'purchase_unit'                 => $component->getPurchaseUnit(),
-                'inventory_unit'                => $component->getInventoryUnit(),
-                'presentation'                  => $component->getPresentation(),
-                'amount_presentation'           => $component->getAmountPresentation(),
-                'unit_price_purchase'           => $component->getUnitPricePresentation(),
-                'presentation_purchase_price'   => $component->getPresentationPurchasePrice(),
-                'sale_unit_price'               => $component->getSaleUnitPrice(),
-                'sale_total_price'              => $component->getSaleTotalPrice(),
-                'unit_price_import_purchase'    => $component->getUnitPriceImportPurchase(),
-                'import_sale_price'             => $component->getImportSalePrice(),
-                'currency_id'                   => $component->getCurrency(),
-                'supplier_delivery_time'        => $component->getSupplierDeliveryTime(),
-                'datasheet_file'                => $component->getDatashetFile(),
-                'image_file'                    => $component->getImageFile(),
-                'sat_code'                      => $component->getSatCode(),
+                'folio'                     => $component->getFolio(),
+                'function'                  => $component->getFunction(),
+                'description'               => $component->getDescription(),
+                'listCode'                  => $component->getListCode(),
+                'purchaseType'              => $component->getPurchaseType(),
+                'supplier'                  => $component->getSupplier()->getId(),
+                'brand'                     => $component->getBrand()->getId(),
+                'classification'            => $component->getClassification(),
+                'purchaseUnit'              => $component->getPurchaseUnit(),
+                'inventoryUnit'             => $component->getInventoryUnit(),
+                'presentation'              => $component->getPresentation(),
+                'amountPresentation'        => $component->getAmountPresentation(),
+                'unitPricePurchase'         => $component->getUnitPricePurchase(),
+                'presentationPurchasePrice' => $component->getPresentationPurchasePrice(),
+                'saleUnitPrice'             => $component->getSaleUnitPrice(),
+                'saleTotalPrice'            => $component->getSaleTotalPrice(),
+                'unitPriceImportPurchase'   => $component->getUnitPriceImportPurchase(),
+                'importSalePrice'           => $component->getImportSalePrice(),
+                'currency'                  => $component->getCurrency()->getId(),
+                'supplierDeliveryTime'      => $component->getSupplierDeliveryTime(),
+                'datasheetFile'             => $component->getDatasheetFile(),
+                'imageFile'                 => $component->getImageFile(),
+                'satCode'                   => $component->getSatCode(),
             ]);
         }
 

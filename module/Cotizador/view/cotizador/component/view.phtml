@@ -1,0 +1,119 @@
+<?php
+$this->headTitle('Revisar Componente');
+
+$this->mainMenu()->setActiveItemId('components');
+
+$this->pageBreadcrumbs()->setItems([
+    'Home' => $this->url('home'),
+    'Componentes' => $this->url('components'),
+    'Revisar' => $this->url('components', ['action' => 'view', 'id' => $component->getId()]),
+]);
+?>
+
+<?= $this->flashMessenger()->render('error', ['alert', 'alert-warning']); ?>
+<?= $this->flashMessenger()->render('success', ['alert', 'alert-success']); ?>
+<?= $this->flashMessenger()->render('info', ['alert', 'alert-info']); ?>
+
+<h2>Detalles de <?= $this->escapeHtml($component->getFolio()) ?></h2>
+
+<p>
+    <a class="btn btn-default" href="
+        <?= $this->url(
+            'components',
+            ['action' => 'edit', 'id' => $component->getId()]
+        );
+        ?>">
+        <span class="glyphicon glyphicon-pencil"></span> Actualizar
+    </a>
+</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th>Folio</th>
+                <td><?= $this->escapeHtml($component->getFolio()) ?></td>
+            </tr>
+            <tr>
+                <th>Función</th>
+                <td><?= $this->escapeHtml($component->getFunction()) ?></td>
+            </tr>
+            <tr>
+                <th>Descripción</th>
+                <td><?= $this->escapeHtml($component->getDescription()) ?></td>
+            </tr>
+            <tr>
+                <th>Catálogo</th>
+                <td><?= $this->escapeHtml($component->getListCode()) ?></td>
+            </tr>
+            <tr>
+                <th>Tipo de Compra</th>
+                <td><?= $this->escapeHtml($component->getPurchaseTypeAsString()) ?></td>
+            </tr>
+            <tr>
+                <th>Proveedor</th>
+                <td><?= $this->escapeHtml($component->getSupplier()->getName()) ?></td>
+            </tr>
+            <tr>
+                <th>Marca</th>
+                <td><?= $this->escapeHtml($component->getBrand()->getName()) ?></td>
+            </tr>
+            <tr>
+                <th>Grupo de Artículos</th>
+                <td><?= $this->escapeHtml($component->getClassification()->getName()) ?></td>
+            </tr>
+            <tr>
+                <th>Unidad de Compra</th>
+                <td><?= $this->escapeHtml($component->getPurchaseUnit()->getName()) ?></td>
+            </tr>
+            <tr>
+                <th>Unidad de Inventario</th>
+                <td><?= $this->escapeHtml($component->getInventoryUnit()->getName()) ?></td>
+            </tr>
+            <tr>
+                <th>Presentación</th>
+                <td><?= $this->escapeHtml($component->getPresentation()) ?></td>
+            </tr>
+            <tr>
+                <th>Cantidad por Presentatión</th>
+                <td><?= $this->escapeHtml($component->getAmountPresentation()) ?></td>
+            </tr>
+            <tr>
+                <th>Precio de Compra Unitario</th>
+                <td><?= $this->escapeHtml($component->getUnitPricePurchase()) ?></td>
+            </tr>
+            <tr>
+                <th>Precio de Compra por Presentación</th>
+                <td><?= $this->escapeHtml($component->getPresentationPurchasePrice()) ?></td>
+            </tr>
+            <tr>
+                <th>Precio de Venta Unitario</th>
+                <td><?= $this->escapeHtml($component->getSaleUnitPrice()) ?></td>
+            </tr>
+            <tr>
+                <th>Precio de Venta Total</th>
+                <td><?= $this->escapeHtml($component->getSaleTotalPrice()) ?></td>
+            </tr>
+            <tr>
+                <th>Precio de Compra Unitario de Importación</th>
+                <td><?= $this->escapeHtml($component->getUnitPriceImportPurchase()) ?></td>
+            </tr>
+            <tr>
+                <th>Precio de Venta de Importación</th>
+                <td><?= $this->escapeHtml($component->getImportSalePrice()) ?></td>
+            </tr>
+            <tr>
+                <th>Moneda</th>
+                <td><?= $this->escapeHtml($component->getCurrency()->getCode()) ?></td>
+            </tr>
+            <tr>
+                <th>Tiempo de Entrega del Proveedor</th>
+                <td><?= $this->escapeHtml($component->getSupplierDeliveryTime()) ?></td>
+            </tr>
+            <tr>
+                <th>Clave SAT del Artículo</th>
+                <td><?= $this->escapeHtml($component->getSatCode()) ?></td>
+            </tr>
+        </table>
+    </div>
+</div>
