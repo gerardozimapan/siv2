@@ -150,7 +150,7 @@ return [
             Controller\SupplierController::class => [
                 // Give access to "resetPassword", "message" and "setPassword" actions
                 // to anyone.
-                ['actions' => ['index', 'add', 'edit', 'view'], 'allow' => '*'],
+                ['actions' => ['index', 'add', 'edit', 'view', 'json'], 'allow' => '*'],
                 // Give access to "index", "add", "edit", "view", "changePassword" actions to users having the "user.manage" permission.
                 //['actions' => ['index', 'add', 'edit', 'view', 'changePassword'], 'allow' => '+user.manage']
             ],

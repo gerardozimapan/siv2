@@ -1,6 +1,9 @@
 <?php
 $this->headTitle('Actualizar Componente');
 
+$this->headScript()->appendFile('/js/typeahead.bundle.js', 'text/javascript');
+$this->headScript()->appendFile('/js/test-typeahead.js', 'text/javascript');
+
 $this->mainMenu()->setActiveItemId('components');
 
 $this->pageBreadcrumbs()->setItems([

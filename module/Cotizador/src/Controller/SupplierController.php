@@ -271,4 +271,26 @@ class SupplierController extends AbstractActionController
             'formContact'     => $formContact,
         ]);
     }
+
+    public function jsonAction()
+    {
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true);
+
+        $response = $this->getResponse();
+        $headers = $response->getHeaders();
+        $headers->addHeaderLine("Content-Type: application/json");
+
+        $suppliers = $this->entityManager->getRepository(Supplier::class)
+            ->findBy([], ['id' => 'ASC']);
+
+        $suppliersArray = [];
+        foreach ($suppliers as $supplier) {
+            $suppliersArray[$supplier->getId()] = $supplier->getName();
+        }
+
+        $response->setContent(\Zend\Json\Json::encode($suppliersArray));
+
+        return $response;
+    }
 }
