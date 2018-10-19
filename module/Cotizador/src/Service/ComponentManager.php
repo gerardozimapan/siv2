@@ -15,7 +15,7 @@ use Cotizador\Entity\Supplier;
 class ComponentManager
 {
     /**
-     * Dcotrine entity manager.
+     * Doctrine entity manager.
      * @var Doctrine\ORM\EntityManager
      */
     private $entityManager;
@@ -158,8 +158,14 @@ class ComponentManager
         $component->setImportSalePrice($data['importSalePrice']);
         $component->setCurrency($currency);
         $component->setSupplierDeliveryTime($data['supplierDeliveryTime']);
-        $component->setDatasheetFile($data['datasheetFile']);
-        $component->setImageFile($data['imageFile']);
+        $component->setDatasheetFile($data['datasheetFile']['name']);
+
+        if (isset($data['imageFile']['name']) &&
+            (trim($data['imageFile']['name']) != '') &&
+            ($data['imageFile']['name'] != $component->getImageFile())) {
+            $component->setImageFile($data['imageFile']['name']);
+        }
+
         $component->setSatCode($data['satCode']);
 
         // Apply changes to database.

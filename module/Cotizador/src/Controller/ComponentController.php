@@ -6,6 +6,7 @@ use Cotizador\Entity\Classification;
 use Cotizador\Entity\Component;
 use Cotizador\Entity\Currency;
 use Cotizador\Entity\MeasureUnit;
+use Cotizador\Entity\Supplier;
 use Cotizador\Form\ComponentForm;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -29,12 +30,19 @@ class ComponentController extends AbstractActionController
     private $componentManager;
 
     /**
+     * Image manager.
+     * @var Cotizador\Service\ImageManager
+     */
+    private $imageManager;
+
+    /**
      * Constructor.
      */
-    public function __construct($entityManager, $componentManager)
+    public function __construct($entityManager, $componentManager, $imageManager)
     {
         $this->entityManager    = $entityManager;
         $this->componentManager = $componentManager;
+        $this->imageManager     = $imageManager;
     }
 
     /**
@@ -58,6 +66,17 @@ class ComponentController extends AbstractActionController
     {
         // Create component form.
         $form = new ComponentForm($this->entityManager);
+
+        // Get the list of all availables suppliers (sorted by name).
+        $suppliers = $this->entityManager->getRepository(Supplier::class)
+            ->findBy([], ['name' => 'ASC']);
+        
+        $supplierList = [];
+        foreach ($suppliers as $supplier) {
+            $supplierList[$supplier->getId()] = $supplier->getName();
+        }
+
+        $form->get('supplier')->setValueOptions($supplierList);
 
         // Get the list of all availables brands (sorted by name).
         $brands = $this->entityManager->getRepository(Brand::class)
@@ -178,6 +197,17 @@ class ComponentController extends AbstractActionController
         // Create component form.
         $form = new ComponentForm($this->entityManager, $component);
 
+        // Get the list of all availables suppliers (sorted by name).
+        $suppliers = $this->entityManager->getRepository(Supplier::class)
+            ->findBy([], ['name' => 'ASC']);
+        
+        $supplierList = [];
+        foreach ($suppliers as $supplier) {
+            $supplierList[$supplier->getId()] = $supplier->getName();
+        }
+
+        $form->get('supplier')->setValueOptions($supplierList);
+
         // Get the list of all availables brands (sorted by name).
         $brands = $this->entityManager->getRepository(Brand::class)
             ->findBy([], ['name' => 'ASC']);
@@ -227,8 +257,14 @@ class ComponentController extends AbstractActionController
 
         // Check if user has submitted the form.
         if ($this->getRequest()->isPost()) {
+            // Make certain to merge the files info!
+            $request = $this->getRequest();
+            $data = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+            
             // Fill in the form with POST data.
-            $data = $this->params()->fromPost();
             $form->setData($data);
 
             // Validate form.
@@ -277,5 +313,57 @@ class ComponentController extends AbstractActionController
             'component' => $component,
             'form'      => $form,
         ]);
+    }
+
+    /** 
+     * The 'image' action manage the display of images for each component.
+     */
+    public function imageAction()
+    {
+        // Get the name from GET variable.
+        $fileName = $this->params()->fromQuery('name', '');
+
+        // Check whether the user needs a thumbnail or a full-size image.
+        $isThumbnail = (bool)$this->params()->fromQuery('thumbnail', false);
+
+        // Get path to image file.
+        $fileName = $this->imageManager->getImagePathByName($fileName);
+
+        if ($isThumbnail) {
+            // Resize the image.
+            $fileName = $this->imageManager->resizeImage($fileName);
+        }
+
+        // Get image file info (size and MIME type).
+        $fileInfo = $this->imageManager->getImageFileInfo($fileName);
+        if ($fileInfo === false) {
+            // Set 404 Not Found status code
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Write HTTP headers.
+        $response = $this->getResponse();
+        $headers = $response->getHeaders();
+        $headers->addHeaderLine("Content-type: " . $fileInfo['type']);
+        $headers->addHeaderLine("Content-length: " . $fileInfo['size']);
+
+        // Write file content.
+        $fileContent = $this->imageManager->getImageFileContent($fileName);
+        if ($fileContent != false) {
+            $response->setContent($fileContent);
+        } else {
+            // Set 500 Server Error status code.
+            $this->getResponse()->setStatusCode(500);
+            return;
+        }
+
+        if ($isThumbnail) {
+            // Remove temporary thumbnail image file.
+            unlink($fileName);
+        }
+
+        // Return Response to avoid default view rendering.
+        return $this->getResponse();
     }
 }

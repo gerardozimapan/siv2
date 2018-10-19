@@ -102,9 +102,9 @@ $form->get('supplierDeliveryTime')->setAttributes([
     'placeholder' => '30 días'
 ]);
 
-$form->get('files')->setAttributes([
-    'class' => 'form-check',
-]);
+// $form->get('files')->setAttributes([
+//     'class' => 'form-check',
+// ]);
 
 $form->get('satCode')->setAttributes([
     'class' => 'form-control',
@@ -120,6 +120,8 @@ $form->prepare();
 ?>
 
 <h2>Actualizar <i><?= $this->escapeHtml($component->getFolio()); ?></i></h2>
+
+<p><?= var_dump($component->getImageFile()) ?></p>
 
 <div class="row">
     <div class="col-md-6">
@@ -157,7 +159,7 @@ $form->prepare();
 
         <div class="form-group">
             <?= $this->formLabel($form->get('supplier')); ?>
-            <?= $this->formElement($form->get('supplier')); ?>
+            <?= $this->formSelect($form->get('supplier')); ?>
             <?= $this->formElementErrors($form->get('supplier')); ?>
         </div>
 
@@ -246,10 +248,17 @@ $form->prepare();
         </div>
 
         <div class="form-group">
-            <?= $this->formLabel($form->get('files')); ?>
-            <?= $this->formFile($form->get('files')); ?>
-            <?= $this->formElementErrors($form->get('files')); ?>
-            <div class="hint">(PDF, JPG and PNG formats are allowed)</div>
+            <?= $this->formLabel($form->get('imageFile')); ?>
+            <?= $this->formFile($form->get('imageFile')); ?>
+            <?= $this->formElementErrors($form->get('imageFile')); ?>
+            <div class="hint">(JPG and PNG formats are allowed)</div>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('datasheetFile')); ?>
+            <?= $this->formFile($form->get('datasheetFile')); ?>
+            <?= $this->formElementErrors($form->get('datasheetFile')); ?>
+            <div class="hint">(PDF format is allowed)</div>
         </div>
 
         <div class="form-group">
@@ -260,5 +269,22 @@ $form->prepare();
 
         <?= $this->formElement($form->get('submit')); ?>
         <?= $this->form()->closeTag(); ?>
+    </div>
+
+    <div class="col-md-6">
+        <div class="img-thumbnail">
+                
+        <img src="<?= $this->url('components', ['action'=>'image'], 
+                ['query'=>['name'=>$component->getImageFile(), 'thumbnail'=>true]]); ?>">
+                
+        <div class="caption">
+            <h3><?php echo $component->getImageFile(); ?></h3>                    
+            <p>
+            <a target="_blank" href="<?= $this->url('components', ['action'=>'image'], 
+            ['query'=>['name'=>$component->getImageFile()]]); ?>" 
+            class="btn btn-default" role="button">Show in Natural Size</a>
+            </p>
+        </div>
+        </div>
     </div>
 </div>

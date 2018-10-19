@@ -186,19 +186,19 @@ return [
 
             Controller\ComponentController::class => [
                 // Give access to "index", "add", "edit", "view", "delete" actions to users having the "component.manage" permission.
-                ['actions' => ['index', 'add', 'edit', 'view', 'delete'], 'allow' => '*'],
+                ['actions' => ['index', 'add', 'edit', 'view', 'delete', 'image'], 'allow' => '*'],
             ],
 
         ]
     ],
     'service_manager' => [
         'factories' => [
-            Service\MeasureUnitManager::class => Service\Factory\MeasureUnitManagerFactory::class,
             Service\BrandManager::class => Service\Factory\BrandManagerFactory::class,
             Service\CategoryManager::class => Service\Factory\CategoryManagerFactory::class,
             Service\ClassificationManager::class => Service\Factory\ClassificationManagerFactory::class,
             Service\ClientManager::class => Service\Factory\ClientManagerFactory::class,
             Service\ComponentManager::class => Service\Factory\ComponentManagerFactory::class,
+            Service\ImageManager::class => Service\Factory\ImageManagerFactory::class,
             Service\MeasureUnitManager::class => Service\Factory\MeasureUnitManagerFactory::class,
             Service\SupplierManager::class => Service\Factory\SupplierManagerFactory::class,
         ],

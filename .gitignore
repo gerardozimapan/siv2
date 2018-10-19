@@ -48,6 +48,9 @@ vendor/
 # Local configs
 config/autoload/*.local.php
 
+# Local assets
+assets/
+
 # Binary gettext files
 *.mo
 

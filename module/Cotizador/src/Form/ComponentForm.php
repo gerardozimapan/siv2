@@ -104,7 +104,7 @@ class ComponentForm extends Form
 
         // Add "supplier" field.
         $this->add([
-            'type' => 'text',
+            'type' => 'select',
             'name' => 'supplier',
             'options' => [
                 'label' => 'Proveedor',
@@ -237,15 +237,27 @@ class ComponentForm extends Form
             ],
         ]);
 
-        // Add "files" field.
+        // Add "imageFile" field.
         $this->add([
             'type' => 'file',
-            'name' => 'files',
+            'name' => 'imageFile',
             'attributes' => [
-                'id' => 'files',
+                'id' => 'image',
             ],
             'options' => [
-                'label' => 'Archivos del Artículo',
+                'label' => 'Imagen del Artículo',
+            ],
+        ]);
+
+        // Add "datasheetFile" field.
+        $this->add([
+            'type' => 'file',
+            'name' => 'datasheetFile',
+            'attributes' => [
+                'id' => 'datasheet',
+            ],
+            'options' => [
+                'label' => 'Datasheet del Artículo',
             ],
         ]);
 
@@ -626,7 +638,70 @@ class ComponentForm extends Form
             ],
         ]);
 
-        // Add input filter for "files" field.
+        // Add input filter for "imageFile" field.
+        $inputFilter->add([
+            'name'     => 'imageFile',
+            'required' => false,
+            'validators' => [
+                ['name' => 'FileUploadFile'],
+                [
+                    'name'    => 'FileMimeType',
+                    'options' => [
+                        'mimeType' => ['image/jpeg', 'image/png',],
+                    ],
+                ],
+                ['name' => 'FileIsImage'],
+                [
+                    'name' => 'FileImageSize',
+                    'options' => [
+                        'minWidth'  => 128,
+                        'minHeight' => 128,
+                        'maxWidth'  => 4096,
+                        'maxHeight' => 4096,
+                    ],
+                ],
+            ],
+            'filters' => [
+                [
+                    'name' => 'FileRenameUpload',
+                    'options' => [
+                        'target' => './assets/upload',
+                        'useUploadName' => true,
+                        'useUploadExtension' => true,
+                        'overwrite' => true,
+                        'randomize' => false,
+                    ],
+                ],
+            ],
+        ]);
+
+        // Add input filter for "datasheetFile" field.
+        $inputFilter->add([
+            'name'     => 'datasheetFile',
+            'required' => false,
+            'validators' => [
+                ['name' => 'FileUploadFile'],
+                [
+                    'name'    => 'FileMimeType',
+                    'options' => [
+                        'mimeType' => ['application/pdf',]
+                    ],
+                ],
+            ],
+            'filters' => [
+                [
+                    'name' => 'FileRenameUpload',
+                    'options' => [
+                        'target' => './assets/upload',
+                        'useUploadName' => true,
+                        'useUploadExtension' => true,
+                        'overwrite' => false,
+                        'randomize' => false,
+                    ],
+                ],
+            ],
+        ]);
+
         // Add input filter for "satCode" field.
         $inputFilter->add([
             'name'     => 'satCode',
