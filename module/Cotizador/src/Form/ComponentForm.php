@@ -687,6 +687,13 @@ class ComponentForm extends Form
                         'mimeType' => ['application/pdf',]
                     ],
                 ],
+                [
+                    'name'    => 'FileSize',
+                    'options' => [
+                        'min' => '1kB',
+                        'max' => '10MB'
+                    ],
+                ],
             ],
             'filters' => [
                 [

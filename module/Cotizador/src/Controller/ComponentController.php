@@ -36,13 +36,24 @@ class ComponentController extends AbstractActionController
     private $imageManager;
 
     /**
+     * Datasheet manager.
+     * @var Cotizador\Service\DatasheetManager
+     */
+    private $datasheetManager;
+
+    /**
      * Constructor.
      */
-    public function __construct($entityManager, $componentManager, $imageManager)
-    {
+    public function __construct(
+        $entityManager, 
+        $componentManager, 
+        $imageManager, 
+        $datasheetManager
+    ){
         $this->entityManager    = $entityManager;
         $this->componentManager = $componentManager;
         $this->imageManager     = $imageManager;
+        $this->datasheetManager = $datasheetManager;
     }
 
     /**
@@ -126,7 +137,15 @@ class ComponentController extends AbstractActionController
         // Check if user has submitted the form.
         if ($this->getRequest()->isPost()) {
             // Fill in the form with POST data.
-            $data = $this->params()->fromPost();
+            // $data = $this->params()->fromPost();
+
+            // Make certain to merge the files info!
+            $request = $this->getRequest();
+            $data = array_merge_recursive(
+                $request->getPost()->toArray(),
+                $request->getFiles()->toArray()
+            );
+
             $form->setData($data);
 
             // Validate form.
@@ -315,6 +334,36 @@ class ComponentController extends AbstractActionController
         ]);
     }
 
+    /**
+     * Export all components to excel.
+     */
+    public function exportListToExcelAction()
+    {
+        // $viewModel = new ViewModel();
+        // $viewModel->setTerminal(true);
+
+        $response = $this->getResponse();
+        $headers = $response->getHeaders();
+
+        // Get file name generated.
+        $filepath = $this->componentManager->exportComponentListToExcel();
+
+        $content = file_get_contents($filepath);
+
+        // Redirect output to a client’s web browser (Xlsx)
+        $headers->addHeaderLine('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $headers->addHeaderLine('Content-Disposition: attachment;filename="01simple.xlsx"');
+        $headers->addHeaderLine('Cache-Control: max-age=0');
+        $headers->addHeaderLine('Content-Length', strlen($content));
+
+        $response->setContent($content);
+
+        // Delete file
+        unlink($filepath);
+
+        return $response;
+    }
+
     /** 
      * The 'image' action manage the display of images for each component.
      */
@@ -365,5 +414,146 @@ class ComponentController extends AbstractActionController
 
         // Return Response to avoid default view rendering.
         return $this->getResponse();
+    }
+
+    /**
+     * This action delete a image file and return result in json format.
+     */
+    public function deleteImageAction() 
+    {
+        $id = (int)$this->params()->fromRoute('id', -1);
+        if ($id < 1) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Find a component with such ID.
+        $component = $this->entityManager->getRepository(Component::class)
+            ->find($id);
+
+        if (null == $component) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Get filename for delete from file system.
+        $filename = $component->getImageFile();
+
+        // Delete filename from database.
+        $component->setImageFile('');
+
+        // Apply changes to database.
+        $this->entityManager->flush();
+
+        // Delete file from file system.
+        $this->imageManager->deleteImageFile($filename);
+
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true);
+
+        $response = $this->getResponse();
+        $headers = $response->getHeaders();
+        $headers->addHeaderLine("Content-Type: application/json");
+
+        $response->setContent(\Zend\Json\Json::encode(['result' => true]));
+        return $response;
+    }
+
+    /**
+     * The 'datasheet' action manage the thumbnail and display pdf datasheet.
+     */
+    public function datasheetAction()
+    {
+        // Get the name from GET variable.
+        $filename = $this->params()->fromQuery('name', '');
+
+        // Check whether the user needs a thumbnail to display.
+        $isThumbnail = (bool)$this->params()->fromQuery('thumbnail', false);
+
+        // Get path to datasheet file.
+        $filename = $this->datasheetManager->getDatasheetPathByName($filename);
+
+        if ($isThumbnail) {
+            $filename = $this->datasheetManager->createThumbnail($filename);
+        }
+
+        // Get image file info (size and MIME type).
+        $fileinfo = $this->datasheetManager->getDatasheetFileInfo($filename);
+        if ($fileinfo === false) {
+            // Set 404 Not Found status code
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Write HTTP headers.
+        $response = $this->getResponse();
+        $headers = $response->getHeaders();
+        $headers->addHeaderLine("Content-type: " . $fileinfo['type']);
+        $headers->addHeaderLine("Content-length: " . $fileinfo['size']);
+
+        // Write file content.
+        $fileContent = $this->datasheetManager->getDatasheetFileContent($filename);
+        if ($fileContent != false) {
+            $response->setContent($fileContent);
+        } else {
+            // Set 500 Server Error status code.
+            $this->getResponse()->setStatusCode(500);
+            return;
+        }
+
+        // Remove temporary thumbnail image file
+        if ($isThumbnail) {
+            unlink($filename);
+        }
+
+        // Return Response to avoid default view rendering.
+        return $this->getResponse();
+
+    }
+
+    /**
+     * This action delete a datasheet file and return json format to result.
+     */
+    public function deleteDatasheetAction()
+    {
+        $id = (int)$this->params()->fromRoute('id', -1);
+        if ($id < 1) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Find a component with such ID.
+        $component = $this->entityManager->getRepository(Component::class)
+            ->find($id);
+        
+        if (null === $component) {
+            $this->getResponse()->setStatusCode(404);
+            return;
+        }
+
+        // Get filename for delete from file system.
+        $filename = $component->getDatasheetFile();
+
+        // Delete filename from database.
+        $component->setDatasheetFile('');
+
+        // Apply changes to database.
+        $this->entityManager->flush();
+
+        // Delete file from file system.
+        $this->datasheetManager->deleteDatasheetFile($filename);
+
+        // No render view.
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true);
+
+        // Set header for json response.
+        $response = $this->getResponse();
+        $headers = $response->getHeaders();
+        $headers->addHeaderLine("Content-Type: application/json");
+
+        // Prepare response.
+        $response->setContent(\Zend\Json\Json::encode(['result' => true]));
+        return $response;
     }
 }

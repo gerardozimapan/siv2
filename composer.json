@@ -28,7 +28,9 @@
         "zendframework/zend-mvc-plugin-identity": "^1.0",
         "zendframework/zend-permissions-rbac": "^2.6",
         "zendframework/zend-captcha": "^2.7",
-        "zendframework/zend-serializer": "^2.8"
+        "zendframework/zend-serializer": "^2.8",
+        "tecnickcom/tcpdf": "^6.2",
+        "phpoffice/phpspreadsheet": "^1.5"
     },
     "autoload": {
         "psr-4": {

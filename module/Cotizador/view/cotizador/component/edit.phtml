@@ -1,8 +1,9 @@
 <?php
 $this->headTitle('Actualizar Componente');
 
-$this->headScript()->appendFile('/js/typeahead.bundle.js', 'text/javascript');
-$this->headScript()->appendFile('/js/test-typeahead.js', 'text/javascript');
+// $this->headScript()->appendFile('/js/typeahead.bundle.js', 'text/javascript');
+// $this->headScript()->appendFile('/js/test-typeahead.js', 'text/javascript');
+$this->headScript()->appendFile('/js/manageImage.js', 'text/javascript');
 
 $this->mainMenu()->setActiveItemId('components');
 
@@ -120,8 +121,6 @@ $form->prepare();
 ?>
 
 <h2>Actualizar <i><?= $this->escapeHtml($component->getFolio()); ?></i></h2>
-
-<p><?= var_dump($component->getImageFile()) ?></p>
 
 <div class="row">
     <div class="col-md-6">
@@ -272,19 +271,63 @@ $form->prepare();
     </div>
 
     <div class="col-md-6">
-        <div class="img-thumbnail">
-                
-        <img src="<?= $this->url('components', ['action'=>'image'], 
-                ['query'=>['name'=>$component->getImageFile(), 'thumbnail'=>true]]); ?>">
-                
-        <div class="caption">
-            <h3><?php echo $component->getImageFile(); ?></h3>                    
-            <p>
-            <a target="_blank" href="<?= $this->url('components', ['action'=>'image'], 
-            ['query'=>['name'=>$component->getImageFile()]]); ?>" 
-            class="btn btn-default" role="button">Show in Natural Size</a>
-            </p>
+        <?php if ($component->getImageFile() != '') : ?>
+        <div class="row" id="img-thumb">
+            <div class="img-thumbnail">
+                <img src="<?= $this->url('components', ['action'=>'image'], 
+                    ['query'=>['name'=>$component->getImageFile(), 'thumbnail'=>true]]); ?>">
+                    
+                <div class="caption">
+                    <h3><?php echo $component->getImageFile(); ?></h3>                    
+                    <p>
+                    <a target="_blank" href="<?= $this->url('components', ['action'=>'image'], 
+                    ['query'=>['name'=>$component->getImageFile()]]); ?>" 
+                    class="btn btn-default" role="button"> <span class="glyphicon glyphicon-fullscreen"></span> Original Size</a>
+                    <a id="deleteImage" href="#confirm" data-toggle="modal" data-id="<?= $component->getId(); ?>"
+                    data-source="image"
+                    class="btn btn-danger" role="button"> <span class="glyphicon glyphicon-remove"></span> Remove</a>
+                    </p>
+                </div>
+            </div>
         </div>
+        <?php endif; ?>
+
+        <?php if ($component->getDatasheetFile() != '') : ?>
+        <div class="row" id="ds-thumb">
+            <div class="img-thumbnail">
+                <img src="<?= $this->url('components', ['action'=>'datasheet'], 
+                    ['query'=>['name'=>$component->getDatasheetFile(), 'thumbnail' => true]]); ?>" alt="">
+
+                <div class="caption">
+                    <h4><?= $component->getDatasheetFile() ?></h4>
+                    <a target="_blank" href="<?= $this->url('components', ['action'=>'datasheet'], 
+                    ['query'=>['name'=>$component->getDatasheetFile()]]); ?>"
+                    class="btn btn-default" role="button"><span class="glyphicon glyphicon-fullscreen"></span> View</a>
+                    <a id="deleteDatasheet" href="#confirm" data-toggle="modal" data-id="<?= $component->getId(); ?>"
+                    data-source="datasheet"
+                    class="btn btn-danger" role="button"> <span class="glyphicon glyphicon-remove"></span> Remove</a>
+                </div>
+            </div>
         </div>
+        <?php endif; ?>
     </div>
 </div>
+
+<!-- Dialog for confirm delete item. -->
+<div class="modal fade"  id="confirm" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Confirmar...</h4>
+      </div>
+      <div class="modal-body">
+        <p><h4>¿Desea eliminar este elemento?</h4></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="delete">Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

@@ -29,7 +29,14 @@ $this->pageBreadcrumbs()->setItems([
 
     <?php foreach ($components as $component) : ?>
     <tr>
-        <td><?= $this->escapeHtml($component->getFolio()); ?></td>
+        <td><a 
+                href="<?= 
+                    $this->url(
+                        'components', 
+                        ['action' => 'view', 'id' => $component->getId()])
+                ?>"> <?= $this->escapeHtml($component->getFolio()); ?>
+            </a>
+        </td>
         <td><?= $this->escapeHtml($component->getDescription()); ?></td>
         <td><?= $this->escapeHtml($component->getBrand()->getName()); ?></td>
         <td><?= $this->escapeHtml($component->getListCode()); ?></td>

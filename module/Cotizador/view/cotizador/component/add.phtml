@@ -246,10 +246,17 @@ $form->prepare();
         </div>
 
         <div class="form-group">
-            <?= $this->formLabel($form->get('files')); ?>
-            <?= $this->formFile($form->get('files')); ?>
-            <?= $this->formElementErrors($form->get('files')); ?>
-            <div class="hint">(PDF, JPG and PNG formats are allowed)</div>
+            <?= $this->formLabel($form->get('imageFile')); ?>
+            <?= $this->formFile($form->get('imageFile')); ?>
+            <?= $this->formElementErrors($form->get('imageFile')); ?>
+            <div class="hint">(JPG and PNG formats are allowed)</div>
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('datasheetFile')); ?>
+            <?= $this->formFile($form->get('datasheetFile')); ?>
+            <?= $this->formElementErrors($form->get('datasheetFile')); ?>
+            <div class="hint">(PDF format is allowed)</div>
         </div>
 
         <div class="form-group">

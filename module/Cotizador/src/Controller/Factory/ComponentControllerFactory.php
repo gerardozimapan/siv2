@@ -3,6 +3,7 @@ namespace Cotizador\Controller\Factory;
 
 use Cotizador\Controller\ComponentController;
 use Cotizador\Service\ComponentManager;
+use Cotizador\Service\DatasheetManager;
 use Cotizador\Service\ImageManager;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
@@ -17,9 +18,15 @@ class ComponentControllerFactory implements FactoryInterface
     {
         $entityManager    = $container->get('doctrine.entitymanager.orm_default');
         $componentManager = $container->get(ComponentManager::class);
+        $datasheetManager = $container->get(DatasheetManager::class);
         $imageManager     = $container->get(ImageManager::class);
 
         // Instantiate the controller an inject dependencies
-        return new ComponentController($entityManager, $componentManager, $imageManager);
+        return new ComponentController(
+            $entityManager, 
+            $componentManager, 
+            $imageManager, 
+            $datasheetManager
+        );
     }
 }

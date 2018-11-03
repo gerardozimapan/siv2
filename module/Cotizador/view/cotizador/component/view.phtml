@@ -1,4 +1,6 @@
 <?php
+$this->headLink()->appendStylesheet('/css/modal.css');
+$this->inlineScript()->appendFile('/js/modal.js', 'text/javascript');
 $this->headTitle('Revisar Componente');
 
 $this->mainMenu()->setActiveItemId('components');
@@ -116,4 +118,37 @@ $this->pageBreadcrumbs()->setItems([
             </tr>
         </table>
     </div>
+    <div class="col-md-6" align="center">
+        <div class="row">
+            <div class="img-thumbnail">
+                    
+            <img id="myImg" src="<?= $this->url('components', ['action' => 'image'], 
+                    ['query' => ['name' => $component->getImageFile(), 'thumbnail' => true]]); ?>"
+                    style="width:100%;max-width:300px">
+                    
+            </div>
+        </div>
+        <div class="row">
+            <div class="img-thumbnail">
+                <a target="_blank" href="<?= $this->url('components', ['action' => 'datasheet'], 
+                    ['query' => ['name' => $component->getDatasheetFile()]]); ?>">
+                    <img src="<?= $this->url('components', ['action' => 'datasheet'], 
+                        ['query' => ['name' => $component->getDatasheetFile(), 'thumbnail' => true]]); ?>" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- The Close Button -->
+  <span class="close">&times;</span>
+
+  <!-- Modal Content (The Image) -->
+  <img class="modal-content" id="img01">
+
+  <!-- Modal Caption (Image Text) -->
+  <div id="caption"></div>
 </div>

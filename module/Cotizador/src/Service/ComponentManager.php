@@ -7,6 +7,8 @@ use Cotizador\Entity\Component;
 use Cotizador\Entity\Currency;
 use Cotizador\Entity\MeasureUnit;
 use Cotizador\Entity\Supplier;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * This service is responsible for adding/editing components
@@ -86,8 +88,8 @@ class ComponentManager
         $component->setImportSalePrice($data['importSalePrice']);
         $component->setCurrency($currency);
         $component->setSupplierDeliveryTime($data['supplierDeliveryTime']);
-        $component->setDatasheetFile($data['datasheetFile']);
-        $component->setImageFile($data['imageFile']);
+        $component->setDatasheetFile($data['datasheetFile']['name']);
+        $component->setImageFile($data['imageFile']['name']);
         $component->setSatCode($data['satCode']);
 
         // Add the entity to the entity manager.
@@ -158,7 +160,12 @@ class ComponentManager
         $component->setImportSalePrice($data['importSalePrice']);
         $component->setCurrency($currency);
         $component->setSupplierDeliveryTime($data['supplierDeliveryTime']);
-        $component->setDatasheetFile($data['datasheetFile']['name']);
+
+        if (isset($data['datasheetFile']['name']) &&
+            (trim($data['datasheetFile']['name']) != '') &&
+            ($data['datasheetFile']['name'] != $component->getDatasheetFile())) {
+            $component->setDatasheetFile($data['datasheetFile']['name']);
+        }
 
         if (isset($data['imageFile']['name']) &&
             (trim($data['imageFile']['name']) != '') &&
@@ -185,5 +192,53 @@ class ComponentManager
             ->findOneByDescription($description);
 
         return $component !== null;
+    }
+
+    /**
+     * Export components list to excel.
+     * @return string
+     */
+    public function exportComponentListToExcel()
+    {
+        // Get all componentes sorted by ID.
+        $components = $this->entityManager->getRepository(Component::class)
+            ->findBy([], ['id' => 'ASC']);
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Create header
+        $rowHeader = [
+            'Folio',
+            'Función',
+            'Descripción',
+            'Catálogo',
+            'Tipo de Compra',
+            'Proveedor',
+            'Marca',
+            'Grupo de Artículos',
+            'Unidad de Compra',
+            'Unidad de Inventario',
+            'Presentación',
+            'Cantidad por Presentación',
+            'Precio Unitario de Compra',
+            'Precio de Compra por Presentación',
+            'Precio Unitario de Venta',
+            'Precio Total de Venta',
+            'Precio de Compra Unitario de Importación',
+            'Precio de Venta de Importación',
+            'Moneda',
+            'Tiempo de Entrega del Proveedor',
+            'Código del SAT',
+        ];
+        $sheet->fromArray($rowHeader, NULL , 'C3');
+
+
+        $sheet->setCellValue('A1', 'Hello World !');
+
+        $filepath = 'assets/hello world.xlsx'; 
+        $write = new Xlsx($spreadsheet);
+        $write->save($filepath);
+        return $filepath;
     }
 }

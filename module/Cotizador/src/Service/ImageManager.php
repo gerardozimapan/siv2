@@ -5,7 +5,7 @@ namespace Cotizador\Service;
 class ImageManager 
 {
     /**
-     * The directory where we sae image files.
+     * The directory where we save image files.
      * @var string
      */
     // private $saveToDir = './assets/upload';
@@ -134,10 +134,22 @@ class ImageManager
             $desiredWidth, $desiredHeight, $originalWidth, $originalHeight);
 
         // Save the resized image to temporary location
-        $tmpFileName = tempnam("/tmp", "FOO");
+        $tmpFileName = tempnam('/tmp', 'FOO');
         imagejpeg($resultingImage, $tmpFileName, 80);
 
         // Return the path to resulting image.
         return $tmpFileName;
+    }
+
+    /**
+     * Delete file from file system.
+     * @param string $filename
+     */
+    public function deleteImageFile($filename)
+    {
+        $filepath = $this->getImagePathByName($filename);
+        if (file_exists($filepath)) {
+            unlink($filepath);
+        }
     }
 }
